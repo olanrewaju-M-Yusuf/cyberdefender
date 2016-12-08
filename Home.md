@@ -41,13 +41,13 @@ This will build the codebase documentation and place it in the `docs` directory.
 
 ## Coding conventions
 
-Indentation: Each block should consist of 4 spaces
-Object/namespace identifiers: CamelCase
-Function/variable names: underscore_lower_case
-Constants: UNDERSCORE_UPPER_CASE
-Source code encoding: UTF-8 (without BOM)
-All source files must end with a newline
-Line endings: UNIX style (\n)
+* Indentation: Each block should consist of 4 spaces
+* Object/namespace identifiers: CamelCase
+* Function/variable names: underscore_lower_case
+* Constants: UNDERSCORE_UPPER_CASE
+* Source code encoding: UTF-8 (without BOM)
+* All source files must end with a newline
+* Line endings: UNIX style (\n)
 
 
 ## Repository structure
