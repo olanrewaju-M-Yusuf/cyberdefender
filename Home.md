@@ -7,6 +7,7 @@ Welcome to the CyberChef wiki pages. Here you can find guides for installing and
     - [[Repository structure|Getting-started#repository-structure]]
 2. [[Contributing]]
     - [[Coding conventions|Contributing#coding-conventions]]
+    - [[Design principals|Contributing#design-principals]]
 3. [[Adding a new operation]]
     - [[How to add an operation|Adding-a-new-operation#how-to-add-an-operation]]
     - [[Data types|Adding-a-new-operation#data-types]]
