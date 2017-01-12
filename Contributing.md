@@ -1,4 +1,4 @@
-There are lots of opportunities to contribute to CyberChef. If you want ideas, take a look at any [Issues](https://github.com/gchq/CyberChef/issues) tagged with 'help wanted'.
+There are lots of opportunities to contribute to CyberChef. If you want ideas, take a look at any [Issues](https://github.com/gchq/CyberChef/issues) tagged with '[help wanted](https://github.com/gchq/CyberChef/labels/help%20wanted)'.
 
 Before your contributions can be accepted, you must:
 
