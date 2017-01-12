@@ -3,11 +3,13 @@
  1. Create a new file in the `src/js/operations` directory and name it using CamelCase. e.g. `MyOperation.js`
  2. In this file, create a namespace with the same name and populate it with a single function looking like this (all function and variable names should be written in underscore_lower_case):
     
-        var MyOperation = {
-            run_my_operation: function (input, args) {
-                return input;
-            }
-        };
+    ```javascript
+    var MyOperation = {
+        run_my_operation: function (input, args) {
+            return input;
+        }
+    };
+    ```
 
     - `input` will be the input data passed on from the previous operation (or the data entered by the user if yours is the first operation). Its data type is specified in the next step by `input_type`.
     - `args` will be an array of the arguments for your operation. They are specified in the next step by `args`.
@@ -15,53 +17,57 @@
 
  3. In `src/js/config/OperationConfig.js`, create a new entry. For example:
 
-        "The name of your operation": {
-            description: "A short description if necessary, optionally containing HTML code (e.g. lists and paragraphs)",
-            run: MyOperation.run_my_operation, // a reference to the function that runs your operation 
-            input_type: "byte_array", // the input type for your operation, see the next section for valid types
-            output_type: "byte_array", // the output type for your operation, see the next section for valid types
-            highlight: true, // [optional] true if the operation does not change the position of bytes in the output (so that highlighting can be calculated)
-            highlight_reverse: true, // [optional] same as above but for the reverse of the operation (output to input highlighting)
-            manual_bake: false, // [optional] true if auto-bake should be disabled when this operation is added to the recipe
-            args: [ // A list of the arguments that the user will be presented with
-                {
-                    name: "Argument name",
-                    type: "string", // the argument data type, see the next section for valid types
-                    value: MyOperation.DEFAULT_VALUE // the default value of the argument
-                }
-            ]
-        }
+    ```javascript
+	"The name of your operation": {
+		description: "A short description if necessary, optionally containing HTML code (e.g. lists and paragraphs)",
+		run: MyOperation.run_my_operation, // a reference to the function that runs your operation 
+		input_type: "byte_array", // the input type for your operation, see the next section for valid types
+		output_type: "byte_array", // the output type for your operation, see the next section for valid types
+		highlight: true, // [optional] true if the operation does not change the position of bytes in the output (so that highlighting can be calculated)
+		highlight_reverse: true, // [optional] same as above but for the reverse of the operation (output to input highlighting)
+		manual_bake: false, // [optional] true if auto-bake should be disabled when this operation is added to the recipe
+		args: [ // A list of the arguments that the user will be presented with
+			{
+				name: "Argument name",
+				type: "string", // the argument data type, see the next section for valid types
+				value: MyOperation.DEFAULT_VALUE // the default value of the argument
+			}
+		]
+	}
+    ```
         
     For example:
     
-        "XOR": {
-            description: "XOR the input with the given key, provided as either a hex or ASCII string.<br>e.g. fe023da5<br><br><b>Options</b><br><u>Null preserving:</u> If the current byte is 0x00 or the same as the key, skip it.<br><br><u>Differential:</u> Set the key to the value of the previously decoded byte.",
-            run: BitwiseOp.run_xor,
-            input_type: "byte_array",
-            output_type: "byte_array",
-            args: [
-                {
-                    name: "Key",
-                    type: "binary_string",
-                    value: ""
-                },
-                {
-                    name: "Key format",
-                    type: "option",
-                    value: BitwiseOp.KEY_FORMAT
-                },
-                {
-                    name: "Null preserving",
-                    type: "boolean",
-                    value: BitwiseOp.XOR_PRESERVE_NULLS
-                },
-                {
-                    name: "Differential",
-                    type: "boolean",
-                    value: BitwiseOp.XOR_DIFFERENTIAL
-                }
-            ]
-        }
+    ```javascript
+	"XOR": {
+		description: "XOR the input with the given key, provided as either a hex or ASCII string.<br>e.g. fe023da5<br><br><b>Options</b><br><u>Null preserving:</u> If the current byte is 0x00 or the same as the key, skip it.<br><br><u>Differential:</u> Set the key to the value of the previously decoded byte.",
+		run: BitwiseOp.run_xor,
+		input_type: "byte_array",
+		output_type: "byte_array",
+		args: [
+			{
+				name: "Key",
+				type: "binary_string",
+				value: ""
+			},
+			{
+				name: "Key format",
+				type: "option",
+				value: BitwiseOp.KEY_FORMAT
+			},
+			{
+				name: "Null preserving",
+				type: "boolean",
+				value: BitwiseOp.XOR_PRESERVE_NULLS
+			},
+			{
+				name: "Differential",
+				type: "boolean",
+				value: BitwiseOp.XOR_DIFFERENTIAL
+			}
+		]
+	}
+    ```
         
  4. In `src/js/config/Categories.js`, add your operation name to an appropriate list. This determines which menu it will appear in. You can add it to multiple menus if you feel it is appropriate.
  5. Finally, run `grunt dev` if you haven't already. If it's already running, it should automatically build a development version when you save the files.
