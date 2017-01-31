@@ -20,7 +20,7 @@
     ```javascript
 	"The name of your operation": {
 		description: "A short description if necessary, optionally containing HTML code (e.g. lists and paragraphs)",
-		run: MyOperation.run_my_operation, // a reference to the function that runs your operation 
+		run: MyOperation.runMyOperation, // a reference to the function that runs your operation 
 		inputType: "byteArray", // the input type for your operation, see the next section for valid types
 		outputType: "byteArray", // the output type for your operation, see the next section for valid types
 		highlight: true, // [optional] true if the operation does not change the position of bytes in the output (so that highlighting can be calculated)
@@ -41,7 +41,7 @@
     ```javascript
 	"XOR": {
 		description: "XOR the input with the given key, provided as either a hex or ASCII string.<br>e.g. fe023da5<br><br><b>Options</b><br><u>Null preserving:</u> If the current byte is 0x00 or the same as the key, skip it.<br><br><u>Differential:</u> Set the key to the value of the previously decoded byte.",
-		run: BitwiseOp.run_xor,
+		run: BitwiseOp.runXor,
 		inputType: "byteArray",
 		outputType: "byteArray",
 		args: [
