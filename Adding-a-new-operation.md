@@ -117,7 +117,7 @@ Operation arguments (ingredients) can be set to any of the following types:
      - Given an array of `{name: "", value: ""}` objects, the user is presented with an editable dropdown menu. The items in the dropdown are labelled with `name` and set the argument to `value` when selected.
  9. `toggleString`
      - User is presented with a string input box with a toggleable dropdown attached.
-     - Populate the dropdown using the `toggle_values` property.
+     - Populate the dropdown using the `toggleValues` property.
      - Operation receives an object with two properties: `option` containing the user's dropdown selection, and `string` containing the input box contents.
      - Particularly useful for arguments that can be specified in various different formats.
      - See the *XOR* configuration in `src/js/config/OperationConfig.js` for an example of how this works.
