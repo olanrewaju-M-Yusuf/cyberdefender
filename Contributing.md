@@ -11,7 +11,7 @@ Before your contributions can be accepted, you must:
 
 * Indentation: Each block should consist of 4 spaces
 * Object/namespace identifiers: CamelCase
-* Function/variable names: underscore_lower_case
+* Function/variable names: camelCase
 * Constants: UNDERSCORE_UPPER_CASE
 * Source code encoding: UTF-8 (without BOM)
 * All source files must end with a newline
