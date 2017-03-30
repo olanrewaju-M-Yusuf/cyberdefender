@@ -1,21 +1,29 @@
 ## How to add an operation
 
- 1. Create a new file in the `src/js/operations` directory and name it using CamelCase. e.g. `MyOperation.js`
+ 1. Create a new file in the `src/core/operations` directory and name it using CamelCase. e.g. `MyOperation.js`
  2. In this file, create a namespace with the same name and populate it with a single function looking like this (all function and variable names should be written in camelCase):
     
     ```javascript
-    var MyOperation = {
+    const MyOperation = {
         runMyOperation: function (input, args) {
             return input;
         }
     };
+
+    export default MyOperation;
     ```
 
     - `input` will be the input data passed on from the previous operation (or the data entered by the user if yours is the first operation). Its data type is specified in the next step by `inputType`.
     - `args` will be an array of the arguments for your operation. They are specified in the next step by `args`.
     - Make sure that you return the output data in the format specified in the next step by `outputType`.
 
- 3. In `src/js/config/OperationConfig.js`, create a new entry. For example:
+ 3. In `src/core/config/OperationConfig.js`, import your operation at the top of the file:
+
+    ```javascript
+    import MyOperation from "../operations/MyOperation.js";
+    ```
+
+    Then create a new entry:
 
     ```javascript
 	"The name of your operation": {
@@ -69,11 +77,11 @@
 	}
     ```
         
- 4. In `src/js/config/Categories.js`, add your operation name to an appropriate list. This determines which menu it will appear in. You can add it to multiple menus if you feel it is appropriate.
+ 4. In `src/core/config/Categories.js`, add your operation name to an appropriate list. This determines which menu it will appear in. You can add it to multiple menus if you feel it is appropriate.
  5. Finally, run `grunt dev` if you haven't already. If it's already running, it should automatically build a development version when you save the files.
  6. You should now be able to view your operation on the site by browsing to `build/dev`.
- 7. You can write whatever code you like as long as it is encapsulated within the namespace you created (`MyOperation`). Take a look at `src/js/operations/Entropy.js` for a good example.
- 8. You may find it useful to use some helper functions which have been written in `src/js/core/Utils.js`. These are available in the `Utils` object (e.g. `Utils.strToByteArray("Hello")` returns `[72,101,108,108,111]`).
+ 7. You can write whatever code you like as long as it is encapsulated within the namespace you created (`MyOperation`). Take a look at `src/core/operations/Entropy.js` for a good example.
+ 8. You may find it useful to use some helper functions which have been written in `src/core/Utils.js`. These are available in the `Utils` object (e.g. `Utils.strToByteArray("Hello")` returns `[72,101,108,108,111]`).
  
 
 ## Data types
@@ -112,7 +120,7 @@ Operation arguments (ingredients) can be set to any of the following types:
      - Given an array of strings, the user is presented with a dropdown selection box with each of those strings as an option. The selected string is sent to the operation.
  7. `populateOption`
      - Given an array of `{name: "", value: ""}` objects, the user is presented with a dropdown selection box with the names as options. The corresponding value will be assigned to whichever argument index the `target` parameter is set to.
-     - See the *Regular expression* configuration in `src/js/config/OperationConfig.js` for an example of how this works.
+     - See the *Regular expression* configuration in `src/core/config/OperationConfig.js` for an example of how this works.
  8. `editableOption`
      - Given an array of `{name: "", value: ""}` objects, the user is presented with an editable dropdown menu. The items in the dropdown are labelled with `name` and set the argument to `value` when selected.
  9. `toggleString`
@@ -120,4 +128,4 @@ Operation arguments (ingredients) can be set to any of the following types:
      - Populate the dropdown using the `toggleValues` property.
      - Operation receives an object with two properties: `option` containing the user's dropdown selection, and `string` containing the input box contents.
      - Particularly useful for arguments that can be specified in various different formats.
-     - See the *XOR* configuration in `src/js/config/OperationConfig.js` for an example of how this works.
+     - See the *XOR* configuration in `src/core/config/OperationConfig.js` for an example of how this works.
