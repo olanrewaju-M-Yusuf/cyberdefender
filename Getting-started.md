@@ -19,22 +19,42 @@ Grunt has been configured with several tasks to aid in the development process:
 ```
 grunt dev
 ```
-Use this when developing new functionality. It will launch a persistent task which will automatically build an uncompressed, development version of CyberChef located in `build/dev`. Whenever a source file is modified, the development version will be rebuilt.
+> Use this when developing new functionality. It will launch a persistent task which will automatically build an uncompressed, development version of CyberChef located in `build/dev`. Whenever a source file is modified, the development version will be rebuilt.
+
 
 ```
 grunt prod
 ```
-When you are ready to create a production build, run this command. It will lint, concatenate, and compress all the source files and create a production-ready build in `build/prod`. It will also create the inline version of CyberChef at the same location.
+> When you are ready to create a production build, run this command. It will lint, test, concatenate, and compress all the source files and create a production-ready build in `build/prod`. It will also create the inline version of CyberChef at the same location, called `cyberchef.htm`.
+
 
 ```
-grunt stats
+grunt node
 ```
-This command will give you statistics about the code base such as how many lines there are as well as details of file sizes before and after compression.
+> This will package up CyberChef as a NodeJS library, creating the file `build/node/CyberChef.js`. It can then be loaded and used like so:
+> ```javascript
+> > var chef = require("./CyberChef.js")
+> undefined
+> > chef.bake("test", [{"op":"To Hex","args":["Space"]}])
+> { result: '74 65 73 74',
+>   type: 'string',
+>   progress: 1,
+>   options: {},
+>   duration: 2,
+>   error: false }
+> ```
+
+
+```
+grunt test
+```
+> This will run all the pre-configured tests and output the results to stdout.
+
 
 ```
 grunt docs
 ```    
-This will build the codebase documentation and place it in the `docs` directory.
+> Builds the codebase documentation and places it in the `docs` directory.
 
 
 ## Repository structure
@@ -42,22 +62,25 @@ This will build the codebase documentation and place it in the `docs` directory.
  - `build/`
      - `dev/` - This will be populated with an uncompressed development build of CyberChef by running the `grunt dev` command.
      - `prod/` - This folder contains the most recently built production version of CyberChef including the inline version. It is populated by running `grunt prod`.
+     - `node/` - Populated with the packaged NodeJS version of CyberChef by running the `grunt node` command.
  - `src/`
-     - `css/`
-         - `lib/` - Various library CSS files
-         - `structure/` - Structural styles to lay out the stage
-         - `themes/` - Look and feel styles
-     - `html/`
-         - `index.html` - The CyberChef page structure
-     - `js/`
+     - `core/` - Core CyberChef files that make up the heart of the application
          - `config/` - Files specifying the operation configurations
-         - `core/` - Core CyberChef files that make up the heart of the application
-         - `lib/` - Libraries... oh so many libraries...
+         - `lib/` - Libraries that we can't currently import through npm
          - `operations/` - Operation objects
-         - `views/` - Code to handle the various CyberChef views
-             - `html/` - The code which makes up the CyberChef web app
-     - `static/` - Static files like images
+     - `node/` - Wrappers for the NodeJS version of CyberChef
+     - `web/` - The code which makes up the CyberChef web app
+         - `css/`
+             - `lib/` - Library CSS and Less files
+             - `structure/` - Structural styles to lay out the stage
+             - `themes/` - Look and feel styles
+         - `html/`
+             - `index.html` - The CyberChef page structure
+         - `static/` - Static files like images
  - `docs/` - Codebase documentation, populated by running `grunt docs`.
+ - `test/`
+     - `tests/` - Configuration for tests on operations and recipes
+ - `.babelrc` - Babel transpilation configuration
  - `Gruntfile.js` - Grunt build process configuration
  - `LICENSE` - The Apache 2.0 licence information
  - `package.json` - npm configuration and a list of all the dependencies
