@@ -17,15 +17,15 @@ npm will then install all the dependencies needed by Grunt.
 Grunt has been configured with several tasks to aid in the development process:
 
 ```
+grunt prod
+```
+> When you are ready to create a production build, run this command. It will lint, test, concatenate and compress all the source files and create a production-ready build in `build/prod`. It will also create the inline version of CyberChef at the same location, called `cyberchef.htm`.
+
+
+```
 grunt dev
 ```
 > Use this when developing new functionality. It will launch a persistent task which will automatically build an uncompressed, development version of CyberChef located in `build/dev`. Whenever a source file is modified, the development version will be rebuilt.
-
-
-```
-grunt prod
-```
-> When you are ready to create a production build, run this command. It will lint, test, concatenate, and compress all the source files and create a production-ready build in `build/prod`. It will also create the inline version of CyberChef at the same location, called `cyberchef.htm`.
 
 
 ```
