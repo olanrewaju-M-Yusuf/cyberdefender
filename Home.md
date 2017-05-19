@@ -11,3 +11,4 @@ Welcome to the CyberChef wiki pages. Here you can find guides for installing and
 3. [[Adding a new operation]]
     - [[How to add an operation|Adding-a-new-operation#how-to-add-an-operation]]
     - [[Data types|Adding-a-new-operation#data-types]]
+4. [[Creating a new theme]]
