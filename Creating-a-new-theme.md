@@ -16,5 +16,11 @@ It's very easy to add a new theme, there are just a few simple steps:
     :root.mytheme {
     ```
 
- 5. Change the values of the CSS properties to modify the theme to your taste.
- 6. [Submit a pull request!](https://github.com/gchq/CyberChef/wiki/Contributing)
+ 5. Add an import for your theme in `src/web/stylesheets/index.css`.
+
+    ```css
+    @import "./themes/mytheme.css";
+    ```
+
+ 6. Change the values of the CSS properties to modify the theme to your taste.
+ 7. [Submit a pull request!](https://github.com/gchq/CyberChef/wiki/Contributing)
