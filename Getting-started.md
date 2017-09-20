@@ -19,13 +19,15 @@ Grunt has been configured with several tasks to aid in the development process:
 ```
 grunt prod
 ```
-> When you are ready to create a production build, run this command. It will lint, test, concatenate and compress all the source files and create a production-ready build in `build/prod`. It will also create the inline version of CyberChef at the same location, called `cyberchef.htm`.
+> When you are ready to create a production build, run this command. It will lint, test, compile and compress all the source files and create a production-ready build in `build/prod`. It will also create the inline version of CyberChef at the same location, called `cyberchef.htm`.
 
 
 ```
 grunt dev
 ```
-> Use this when developing new functionality. It will launch a persistent task which will automatically build an uncompressed, development version of CyberChef located in `build/dev`. Whenever a source file is modified, the development version will be rebuilt.
+> Use this when developing new functionality. It will launch a web server on port 8080 hosting an uncompressed, development version of CyberChef, accessible by browsing to [`localhost:8080`](http://localhost:8080). Whenever a source file is modified, the development version will be rebuilt automatically.
+
+> Note: This task will initially result in an error relating to the `MetaConfig.js` file but will quickly rebuild and should complete successfully. This is due to the `MetaConfig.js` file being built at the same time as the rest of the app and therefore not being available for compilation immediately.
 
 
 ```
@@ -35,11 +37,12 @@ grunt node
 > ```javascript
 > > var chef = require("./CyberChef.js")
 > undefined
-> > chef.bake("test", [{"op":"To Hex","args":["Space"]}])
-> { result: '74 65 73 74',
+> > chef.bake("test", [{"op":"To Hex","args":["Space"]}]).then(r => { console.log(r) })
+> Promise {
+> ... }
+> > { result: '74 65 73 74',
 >   type: 'string',
 >   progress: 1,
->   options: {},
 >   duration: 2,
 >   error: false }
 > ```
@@ -66,6 +69,7 @@ grunt docs
  - `src/`
      - `core/` - Core CyberChef files that make up the heart of the application
          - `config/` - Files specifying the operation configurations
+             - `modules/` - Modules containing the run functions for each operation 
          - `lib/` - Libraries that we can't currently import through npm
          - `operations/` - Operation objects
      - `node/` - Wrappers for the NodeJS version of CyberChef
@@ -81,7 +85,10 @@ grunt docs
  - `test/`
      - `tests/` - Configuration for tests on operations and recipes
  - `.babelrc` - Babel transpilation configuration
+ - `.travid.yml` - Travis CI build process configuration
  - `Gruntfile.js` - Grunt build process configuration
+ - `webpack.config.js` - Webpack configuration
+ - `postcss.config.js` - PostCSS configuration
  - `LICENSE` - The Apache 2.0 licence information
  - `package.json` - npm configuration and a list of all the dependencies
  - `README.md` - An introduction to CyberChef
