@@ -17,7 +17,20 @@
     - `args` will be an array of the arguments for your operation. They are specified in the next step by `args`.
     - Make sure that you return the output data in the format specified in the next step by `outputType`.
 
- 3. In `src/core/config/OperationConfig.js`, import your operation at the top of the file:
+ 3. Choose which module to add it to. This decision should be based on how much extra code your operation will add to the app, including any dependencies it imports. If it doesn't require any dependencies, add it to the 'Default' module in `src/core/config/modules/Default.js`. Import it at the top of the file:
+
+    ```javascript
+    import MyOperation from "../../operations/MyOperation.js";
+    ```
+
+    and then add it to the operation list like so:
+
+    ```javascript
+    "My Operation": MyOperation.runMyOperation, // a reference to the function that runs your operation 
+    ```
+
+    If it imports the same dependencies as other operations, add it to the relevant existing module. If it imports entirely new dependencies that are not related to other operations in any way, create a new module using an existing module as a template and then import this new module into the `src/core/config/modules/OpModules.js` file.
+ 4. In `src/core/config/OperationConfig.js`, import your operation at the top of the file:
 
     ```javascript
     import MyOperation from "../operations/MyOperation.js";
@@ -26,9 +39,9 @@
     Then create a new entry:
 
     ```javascript
-	"The name of your operation": {
+	"My Operation": {
+		module: "Module name",
 		description: "A short description if necessary, optionally containing HTML code (e.g. lists and paragraphs)",
-		run: MyOperation.runMyOperation, // a reference to the function that runs your operation 
 		inputType: "byteArray", // the input type for your operation, see the next section for valid types
 		outputType: "byteArray", // the output type for your operation, see the next section for valid types
 		highlight: true, // [optional] true if the operation does not change the position of bytes in the output (so that highlighting can be calculated)
@@ -48,8 +61,8 @@
     
     ```javascript
 	"XOR": {
+		module: "Default",
 		description: "XOR the input with the given key, provided as either a hex or ASCII string.<br>e.g. fe023da5<br><br><b>Options</b><br><u>Null preserving:</u> If the current byte is 0x00 or the same as the key, skip it.<br><br><u>Differential:</u> Set the key to the value of the previously decoded byte.",
-		run: BitwiseOp.runXor,
 		inputType: "byteArray",
 		outputType: "byteArray",
 		args: [
@@ -77,11 +90,11 @@
 	}
     ```
         
- 4. In `src/core/config/Categories.js`, add your operation name to an appropriate list. This determines which menu it will appear in. You can add it to multiple menus if you feel it is appropriate.
- 5. Finally, run `grunt dev` if you haven't already. If it's already running, it should automatically build a development version when you save the files.
- 6. You should now be able to view your operation on the site by browsing to `build/dev`.
- 7. You can write whatever code you like as long as it is encapsulated within the namespace you created (`MyOperation`). Take a look at `src/core/operations/Entropy.js` for a good example.
- 8. You may find it useful to use some helper functions which have been written in `src/core/Utils.js`. These are available in the `Utils` object (e.g. `Utils.strToByteArray("Hello")` returns `[72,101,108,108,111]`).
+ 5. In `src/core/config/Categories.js`, add your operation name to an appropriate list. This determines which menu it will appear in. You can add it to multiple menus if you feel it is appropriate.
+ 6. Finally, run `grunt dev` if you haven't already. If it's already running, it should automatically build a development version when you save the files.
+ 7. You should now be able to view your operation on the site by browsing to [`localhost:8080`](http://localhost:8080).
+ 8. You can write whatever code you like as long as it is encapsulated within the namespace you created (`MyOperation`). Take a look at `src/core/operations/Entropy.js` for a good example.
+ 9. You may find it useful to use some helper functions which have been written in `src/core/Utils.js`. These are available in the `Utils` object (e.g. `Utils.strToByteArray("Hello")` returns `[72,101,108,108,111]`).
  
 
 ## Data types
