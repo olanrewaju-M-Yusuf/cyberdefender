@@ -21,9 +21,9 @@ Before your contributions can be accepted, you must:
 ## Design Principals
 
 1. If at all possible, all operations and features should be client-side and not rely on connections to an external server. This increases the utility of CyberChef on closed networks and in virtual machines that are not connected to the Internet. Calls to external APIs may be accepted if there is no other option, but not for critical components.
-2. Latency should be kept to a minimum to enhance the user experience. This means that all operation code should sit on the client, rather than being loaded dynamically from a server.
-3. Use Vanilla JS if at all possible to reduce the number of libraries required and relied upon. Frameworks like jQuery, although included, should not be used unless absolutely necessary.
-4. Minimise the use of large libraries, especially for niche operations that won't be used very often - these will be downloaded by everyone using the app, whether they use that operation or not (due to principal 2).
+2. Latency should be kept to a minimum to enhance the user experience. This means that operation code should sit on the client and be executed there. However, as a trade-off between latency and bandwidth, operation code with large dependencies can be loaded in discrete modules in order to reduce the size of the initial download. The downloading of additional modules must remain entirely transparent so that the user is not inconvenienced.
+3. Large libraries should be kept in separate modules so that they are not downloaded by everyone who uses the app, just those who specifically require the relevant operations.
+4. Use Vanilla JS if at all possible to reduce the number of libraries required and relied upon. Frameworks like jQuery, although included, should not be used unless absolutely necessary.
 
 
 With these principals in mind, any changes or additions to CyberChef should keep it:
