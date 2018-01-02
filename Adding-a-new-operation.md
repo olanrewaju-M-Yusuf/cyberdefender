@@ -107,6 +107,7 @@ Four data types are supported for the input and output of operations:
  2. `byteArray` - e.g. `[104,101,108,108,111]`
  3. `number` - e.g. `562` or `3.14159265`
  4. `html` - e.g. `"<p>hello</p>"`
+ 5. [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) - e.g. `new Uint8Array([104,101,108,108,111]).buffer`
  
 Each operation can define any of these data types as their input or output. The data will be automatically converted to the specified type before running the operation.
 
