@@ -101,7 +101,7 @@
 
 **Input and Output**
 
-Four data types are supported for the input and output of operations:
+Five data types are supported for the input and output of operations:
 
  1. `string` - e.g. `"hello"`
  2. `byteArray` - e.g. `[104,101,108,108,111]`
