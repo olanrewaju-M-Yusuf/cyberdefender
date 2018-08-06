@@ -1,113 +1,31 @@
 ## How to add an operation
 
- 1. Create a new file in the `src/core/operations` directory and name it using CamelCase. e.g. `MyOperation.js`
- 2. In this file, create a namespace with the same name and populate it with a single function looking like this (all function and variable names should be written in camelCase):
-    
-    ```javascript
-    const MyOperation = {
-        runMyOperation: function (input, args) {
-            return input;
-        }
-    };
-
-    export default MyOperation;
-    ```
-
-    - `input` will be the input data passed on from the previous operation (or the data entered by the user if yours is the first operation). Its data type is specified in the next step by `inputType`.
-    - `args` will be an array of the arguments for your operation. They are specified in the next step by `args`.
-    - Make sure that you return the output data in the format specified in the next step by `outputType`.
-
- 3. Choose which module to add it to. This decision should be based on how much extra code your operation will add to the app, including any dependencies it imports. If it doesn't require any dependencies, add it to the 'Default' module in `src/core/config/modules/Default.js`. Import it at the top of the file:
-
-    ```javascript
-    import MyOperation from "../../operations/MyOperation.js";
-    ```
-
-    and then add it to the operation list like so:
-
-    ```javascript
-    "My Operation": MyOperation.runMyOperation, // a reference to the function that runs your operation 
-    ```
-
-    If it imports the same dependencies as other operations, add it to the relevant existing module. If it imports entirely new dependencies that are not related to other operations in any way, create a new module using an existing module as a template and then import this new module into the `src/core/config/modules/OpModules.js` file.
- 4. In `src/core/config/OperationConfig.js`, import your operation at the top of the file:
-
-    ```javascript
-    import MyOperation from "../operations/MyOperation.js";
-    ```
-
-    Then create a new entry:
-
-    ```javascript
-	"My Operation": {
-		module: "Module name",
-		description: "A short description if necessary, optionally containing HTML code (e.g. lists and paragraphs)",
-		inputType: "byteArray", // the input type for your operation, see the next section for valid types
-		outputType: "byteArray", // the output type for your operation, see the next section for valid types
-		highlight: true, // [optional] true if the operation does not change the position of bytes in the output (so that highlighting can be calculated)
-		highlightReverse: true, // [optional] same as above but for the reverse of the operation (output to input highlighting)
-		manualBake: false, // [optional] true if auto-bake should be disabled when this operation is added to the recipe
-		args: [ // A list of the arguments that the user will be presented with
-			{
-				name: "Argument name",
-				type: "string", // the argument data type, see the next section for valid types
-				value: MyOperation.DEFAULT_VALUE // the default value of the argument
-			}
-		]
-	}
-    ```
+The easiest way to create a new operation is to use the provided quickstart script. This can be run using the command `npm run newop`. This script will walk you through the configuration process and create your operation file in the `src/core/operations` directory.
         
-    For example:
-    
-    ```javascript
-	"XOR": {
-		module: "Default",
-		description: "XOR the input with the given key, provided as either a hex or ASCII string.<br>e.g. fe023da5<br><br><b>Options</b><br><u>Null preserving:</u> If the current byte is 0x00 or the same as the key, skip it.<br><br><u>Differential:</u> Set the key to the value of the previously decoded byte.",
-		inputType: "byteArray",
-		outputType: "byteArray",
-		args: [
-			{
-				name: "Key",
-				type: "binaryString",
-				value: ""
-			},
-			{
-				name: "Key format",
-				type: "option",
-				value: BitwiseOp.KEY_FORMAT
-			},
-			{
-				name: "Null preserving",
-				type: "boolean",
-				value: BitwiseOp.XOR_PRESERVE_NULLS
-			},
-			{
-				name: "Differential",
-				type: "boolean",
-				value: BitwiseOp.XOR_DIFFERENTIAL
-			}
-		]
-	}
-    ```
+Once this file has been created, add your operation to the [`src/core/config/Categories.json`](https://github.com/gchq/CyberChef/blob/master/src/core/config/Categories.json) file. This determines which menu it will appear in. You can add it to multiple menus if you feel it is appropriate.
         
- 5. In `src/core/config/Categories.js`, add your operation name to an appropriate list. This determines which menu it will appear in. You can add it to multiple menus if you feel it is appropriate.
- 6. Finally, run `grunt dev` if you haven't already. If it's already running, it should automatically build a development version when you save the files.
- 7. You should now be able to view your operation on the site by browsing to [`localhost:8080`](http://localhost:8080).
- 8. You can write whatever code you like as long as it is encapsulated within the namespace you created (`MyOperation`). Take a look at `src/core/operations/Entropy.js` for a good example.
- 9. You may find it useful to use some helper functions which have been written in `src/core/Utils.js`. These are available in the `Utils` object (e.g. `Utils.strToByteArray("Hello")` returns `[72,101,108,108,111]`).
+Finally, run `grunt dev` if you haven't already. If it's already running, it should automatically build a development version when you save the files. You should now be able to view your operation on the site by browsing to [`localhost:8080`](http://localhost:8080).
+
+You can write whatever code you like as long as it is encapsulated within the object you created. Take a look at [`src/core/operations/Entropy.mjs`](https://github.com/gchq/CyberChef/blob/master/src/core/operations/Entropy.mjs) for a good example.
+
+You may find it useful to use some helper functions which have been written in [`src/core/Utils.mjs`](https://github.com/gchq/CyberChef/blob/master/src/core/Utils.mjs) (e.g. `Utils.strToByteArray("Hello")` returns `[72,101,108,108,111]`).
  
 
 ## Data types
 
 **Input and Output**
 
-Five data types are supported for the input and output of operations:
+Nine data types are supported for the input and output of operations:
 
  1. `string` - e.g. `"hello"`
  2. `byteArray` - e.g. `[104,101,108,108,111]`
  3. `number` - e.g. `562` or `3.14159265`
  4. `html` - e.g. `"<p>hello</p>"`
  5. [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) - e.g. `new Uint8Array([104,101,108,108,111]).buffer`
+ 6. `BigNumber` - e.g. `12345678901234567890`
+ 7. `JSON` - e.g. `[{"a":1,"b":2}]`
+ 8. [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) - e.g. `new File()`
+ 9. `List<File>` - e.g. `[new File(), new File()]`
  
 Each operation can define any of these data types as their input or output. The data will be automatically converted to the specified type before running the operation.
 
@@ -143,3 +61,14 @@ Operation arguments (ingredients) can be set to any of the following types:
      - Operation receives an object with two properties: `option` containing the user's dropdown selection, and `string` containing the input box contents.
      - Particularly useful for arguments that can be specified in various different formats.
      - See the *XOR* configuration in `src/core/config/OperationConfig.js` for an example of how this works.
+
+
+## Presenting complex data
+
+The output of your operation will be passed on to the next operation in the recipe, or to the Output field if it is the final operation. If your operation has a complex output, it should be presented to the user in a friendly format, perhaps using HTML markup, however this format should not be sent to follow-on operations, as it would make onward processing unnecessarily complex.
+
+In these situations, the `present` function should be used. This function is called if your operation is the final operation in the recipe. It is passed the output of your `run` function which you can then manipulate into a suitable format for displaying to the user. This allows you to return a sensible format which can be easily processed from your `run` function.
+
+The data type for your present function should be specified in the operation constructor using `this.presentType`.
+
+A good example of this can be found in [`src/core/operations/Unzip.mjs`](https://github.com/gchq/CyberChef/blob/master/src/core/operations/Unzip.mjs).
