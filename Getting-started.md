@@ -16,6 +16,7 @@ npm will then install all the dependencies needed by Grunt.
 
 Grunt has been configured with several tasks to aid in the development process:
 
+
 ```
 grunt dev
 ```
@@ -69,9 +70,11 @@ grunt docs
  - `src/`
      - `core/` - Core CyberChef files that make up the heart of the application
          - `config/` - Files specifying the operation configurations
-             - `modules/` - Modules containing the run functions for each operation 
-         - `lib/` - Libraries that we can't currently import through npm
+             - `modules/` - Automatically generated module references
+         - `lib/` - Libraries containing shared code for multiple operations
+         - `errors/` - Custom error types
          - `operations/` - Operation objects
+         - `vendor/` - Libraries that cannot currently be imported through npm
      - `node/` - Wrappers for the NodeJS version of CyberChef
      - `web/` - The code which makes up the CyberChef web app
          - `css/`
@@ -85,7 +88,8 @@ grunt docs
  - `test/`
      - `tests/` - Configuration for tests on operations and recipes
  - `.babelrc` - Babel transpilation configuration
- - `.travid.yml` - Travis CI build process configuration
+ - `.editorconfig` - Text editor conventions stored in a cross-compatible format
+ - `.travis.yml` - Travis CI build process configuration
  - `Gruntfile.js` - Grunt build process configuration
  - `webpack.config.js` - Webpack configuration
  - `postcss.config.js` - PostCSS configuration
