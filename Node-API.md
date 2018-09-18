@@ -163,23 +163,51 @@ Operation arguments are the second argument in an operation call. The best way t
 
 Some operation arguments have default values. Some, for example `AESEncrypt`, will not work without specifying some argument.
 
-**Number and String arguments**
+##### Number and String arguments
 
-// TODO
+Example: `toGeoHash`
+```javascript
+chef.toGeoHash("37.8324,112.5584", {
+    precision: 10,
+});
+```
 
-**option arguments**
+##### Option arguments
+These are arguments represented as dropdowns in the UI. Here the string value must be an exact match for the option string.
 
-// TODO
+Example: `toDecimal`
+```javascript
+chef.toDecimal("Hello", {
+    delimiter: "Colon", // note case sensitive
+});
+```
 
-**toggleString arguments** (name????)
+##### toggleString arguments (name???)
+ToggleStrings are arguments where there is a value and an option in one argument. For example, the `ADD` operation has a `key` argument where you can also select the encoding for the key.
 
-// TODO
+Example: `ADD` with default encoding
+```javascript
+chef.ADD("abc", {
+    key: "abc"
+})
+```
 
-**binaryString arguments** (any different??)
+Example: `ADD` with explicit encoding
+```javascript
+chef.ADD("abc", {
+    key: {
+        string: "abc",
+        option: "utf8",
+    },
+});
+```
+
+
+##### binaryString arguments (any different??)
 
 //TODO 
 
-**boolean args** (same??)
+##### boolean args (same??)
 
 // TODO
 
