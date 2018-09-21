@@ -90,7 +90,7 @@ chef.toMorseCode("hello").toString();
 // => .... . .-.. .-.. ---
 ```
 
-Or you can import individual operationsm, benefitting from tree-shaking:
+Or you can import individual operations:
 ```javascript
 import {toMorseCode} from "CyberChef";
 toMorseCode("goodbye").toString();
@@ -163,12 +163,20 @@ Operation arguments are the second argument in an operation call. The best way t
 
 Some operation arguments have default values. Some, for example `AESEncrypt`, will not work without specifying some argument.
 
-##### Number and String arguments
+##### Number, String, binaryString and boolean arguments
+Declare these arguments as key value pairs, where the key is the argument name.
 
-Example: `toGeoHash`
+Example: `toGeoHash` (Number)
 ```javascript
 chef.toGeoHash("37.8324,112.5584", {
     precision: 10,
+});
+```
+
+Example: `toBase32` (binaryString)
+```javascript
+chef.toBase32("diamond", {
+    alphabet: "A-Z",
 });
 ```
 
@@ -182,7 +190,7 @@ chef.toDecimal("Hello", {
 });
 ```
 
-##### toggleString arguments (name???)
+##### toggleString arguments
 ToggleStrings are arguments where there is a value and an option in one argument. For example, the `ADD` operation has a `key` argument where you can also select the encoding for the key.
 
 Example: `ADD` with default encoding
@@ -203,17 +211,8 @@ chef.ADD("abc", {
 ```
 
 
-##### binaryString arguments (any different??)
-
-//TODO 
-
-##### boolean args (same??)
-
-// TODO
-
-
 #### Operation return type
-Operations return a `Dish` type. `Dish` has some functions and behaviours that make it easy to use. Most of the time you can ignore this and treat it as a string or a number.
+Operations return a [`Dish`](#the-dish-type) type. [`Dish`](#the-dish-type) has some functions and behaviours that make it easy to use. Most of the time you can ignore this and treat it as a string or a number.
 
 Logging to the console, string coercion and number coercion work as you would expect:
 
@@ -236,6 +235,8 @@ The `value` property of an operation result will give the raw result.  For examp
 dropBytes("I'd love a byte").value
 // => ArrayBuffer { byteLength: 8 }
 ```
+
+Calling `toString` will give a string representation of the result.
 
 [See more about `Dish` here.](#the-dish-type)
 
@@ -353,17 +354,62 @@ dish.toBase32().toString(); // => NBSWY3DP
 For more information on `Dish`, see the [`Dish` API](#Dish) below
 
 #### `Dish` coercion
-Dish will coerce to a String or an Int where appropriate.
+Dish will coerce to a String or an Number where appropriate.
 
 #### `Dish` examples
 
-// Dish constructor
+Empty Dish contructor
+```javascript
+const dish = new Dish();
+dish.value; // => []
+dish.type; // => 0 (byteArray)
+```
 
-// Operaiton on dish that has byteArray value. Show use of toString
+Dish with type implied from input
+```javascript
+const dish = new Dish("input");
+dish.value; // => "input"
+dish.type; // => 1 (string)
+```
 
-// use of number coercion
+Dish with explicit type declaration
+```javascript
+const dish = new Dish(2, "number");
+dish.value; // => 2
+dish.type; // => 2 (number)
+```
 
-// operation chaining.
+Dish will not perform coercion on construction
+```javascript
+const dish = new Dish("2", "number");
+// Data is not a valid number: "2"
+```
+
+Coerce dish value to another type
+```javascript
+const dish = new Dish("42");
+dish.type; // => 1
+dish.get("number") // => 42
+dish.type; // => 2
+```
+
+Dish values get coerced to String on `console.log` or `toString`
+```javascript
+const result = chef.ADD("some input", {
+    key: "65 66 67 68",
+});
+// ADD output type is byteArray.
+result.value // => [ 216, 213, 212, 205, 133, 207, 213, 216, 218, 218 ]
+console.log(result); /* => ØÕÔÍÏÕØÚÚ */
+result.toString(); /* => ØÕÔÍÏÕØÚÚ */
+```
+
+Perform operations straight off a Dish:
+```javascript
+const result = new Dish("Yum").toBinary();
+result.value; // => 01011001 01110101 01101101
+result.type; // => 1 (string)
+```
 
 #### `Dish` types
 The types for `Dish` are:
@@ -413,7 +459,7 @@ chef.help("md5")
 */
 ```
 
-### `chef.dish`
+### `chef.Dish`
 Class which is used to return operation results, or instantiate your own for operation composition
 
 Also exposed as a top level export `Dish`.
@@ -424,7 +470,7 @@ Also exposed as a top level export `Dish`.
 |`type=null`|`String`|The type that you want the input coerced to.|
 #### Example:
 ```javascript
-const dish = new chef.dish("hello");
+const dish = new chef.Dish("hello");
 dish.value; // "hello"
 dish.type; // 1, signifying string type enum.
 
@@ -480,6 +526,137 @@ chef.bake("Apple pie", [
 
 
 ## `Dish`
+
+
+### static `typeEnum`
+Map from string representation of type to the type enum.
+#### Arguments
+|Name|Type|Description|
+|-|-|-|
+|typeStr|String|String representation of type|
+
+#### Returns 
+|Type|Description|
+|-|-|
+|Number|The type enum for the string.
+
+#### Example
+```javascript
+0 === Dish.typeEnum("bytearray"); // => true
+```
+
+### static `enumLookup`
+Get string representation of Dish type enum.
+
+#### Arguments
+|Name|Type|Description|
+|-|-|-|
+|typeEnum|Number|Dish type enum|
+
+#### Returns 
+|Type|Description|
+|-|-|
+|String|The string representation of the Dish type enum.
+
+#### Example
+```javascript
+"JSON" === Dish.enumLookup(Dish.JSON); // => true
+```
+
+### Constructor
+Construct a new Dish.
+#### Arguments:
+|Name|Type|Description|
+|-|-|-|
+|inputOrDish|any or `Dish` instance|The input for the recipe. Input a Dish to clone it. Accepts object of shape `{input: "a", value: "b"}` or just input.|
+|type|String or Number|type enum or string representation of type.
+
+#### Examples:
+```javascript
+// Empty Dish constructor
+const dish = new Dish();
+
+// String type dish (implied)
+const dish = new Dish("some input");
+
+// Number type dish (explicit)
+const dish = new Dish(460, "number");
+
+// Dish from another dish. Clones it.
+const secondDish = new Dish(dish);
+```
+
+### `dish.get` or `dish.to`
+Coerce the dish to a different type.
+
+#### Arguments
+|Name|Type|Description|
+|-|-|-|
+|type|String or Number|Type enum or string representation of type to convert to|
+
+#### Returns 
+|Type|Description|
+|-|-|
+|any|The value of the dish in after being coerced to the new type.
+
+#### Examples
+```javascript
+const dish = new Dish("360");
+
+dish.type; // => 1 (string)
+
+const asNumber = dish.get("number");
+
+asNumber; // => 360
+
+dish.type; // => 2 (number)
+```
+
+### `toString`
+Coerce the current dish to a string value. Calls `get(1)` on the dish.
+
+
+### `dish.set`
+Sets the data value and type and then validates them.
+#### Arguments
+|Name|Type|Description|
+|-|-|-|
+|value|*|new dish value|
+|type|String or Number| The data type of value. See Dish enums.
+
+#### Example
+```javascript
+const dish = new Dish()
+
+dish.set("this is the value", "string"); // ok
+
+dish.set("this has invalid type", "number") // throws Error.
+```
+
+### `dish.valid`
+
+#### Returns
+|Type|Description|
+|-|-|
+|boolean|whether the current dish config is valid.
+
+### `dish.size`
+Calculate the size of the dish.
+#### Returns 
+|Type|Description|
+|-|-|
+|Number|A representation of the size of the dish value. Calculated in different ways depending on the type.
+
+### `dish.clone`
+Clone the dish.
+#### Returns 
+|Type|Description|
+|-|-|
+|Dish|The cloned dish.
+
+
+// TODO document dish enums
+
 
 
 [1]:https://gchq.github.io/CyberChef
