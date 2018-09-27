@@ -427,7 +427,7 @@ To see what features and fixes are in the pipeline, refer to the repository [iss
 
 # REPL
 
-//TODO 
+To run the repl, install CyberChef, run `grunt node` and then run `npm run repl`.
 
 # API
 
@@ -655,9 +655,22 @@ Clone the dish.
 |Dish|The cloned dish.
 
 
-// TODO document dish enums
 
+### Dish enums
 
+The Dish enums are there to describe the Dish types.
+
+```javascript
+Dish.BYTE_ARRAY     = 0;
+Dish.STRING         = 1;
+Dish.NUMBER         = 2;
+Dish.HTML           = 3;
+Dish.ARRAY_BUFFER   = 4;
+Dish.BIG_NUMBER     = 5;
+Dish.JSON           = 6;
+Dish.FILE           = 7;
+Dish.LIST_FILE      = 8;
+```
 
 [1]:https://gchq.github.io/CyberChef
 [2]:https://github.com/gchq/CyberChef
