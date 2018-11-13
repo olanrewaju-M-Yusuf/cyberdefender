@@ -22,8 +22,6 @@ grunt dev
 ```
 > Use this when developing new functionality. It will launch a web server on port 8080 hosting an uncompressed, development version of CyberChef, accessible by browsing to [`localhost:8080`](http://localhost:8080). Whenever a source file is modified, the development version will be rebuilt automatically.
 
-> Note: This task will initially result in an error relating to the `MetaConfig.js` file but will quickly rebuild and should complete successfully. This is due to the `MetaConfig.js` file being built at the same time as the rest of the app and therefore not being available for compilation immediately.
-
 
 ```
 grunt prod
