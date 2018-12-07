@@ -37,7 +37,7 @@ import chef from "CyberChef";
 const aestTime = chef.translateDateTimeFormat("15/06/2015 20:45:00", {
     outputTimezone: "Australia/Queensland"
 });
-aestTime.toString() === "Tuesday 16th June 2015 06:45:00 +10:00 AEST"; //true
+aestTime.toString() === "Tuesday 16th June 2015 06:45:00 +10:00 AEST"; // true
 ```
 
 ### Parse a Teredo IPv6 Address
@@ -77,6 +77,18 @@ const message = new Dish(`00000000  1f 8b 08 00 12 bc f3 57 00 ff 0d c7 c1 09 00
 .fromHexdump()
 .gunzip();
 message.toString() === "So long and thanks for all the fish." //true
+```
+
+### Interact with files from Node.js `fs` library
+```javascript
+import { Dish, toHex } from "CyberChef";
+
+fs.writeFileSync("test.txt", toHex("hello"));
+
+const file = new Dish(fs.readFileSync("test.txt"));
+
+console.log(file) // 68 65 6c 6c 6f
+file.fromHex().toString() === "hello"; // true
 ```
 
 ## Import with ES6 `import` or CommonJS `require`
