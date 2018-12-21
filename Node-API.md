@@ -144,12 +144,19 @@ chef.toCharcode("Service!", {
 // => 123 145 162 166 151 143 145 41
 ```
 
-Where arguments are options, they will need to be displayed exactly as on the UI. For example:
+Where arguments are options, they are case sensitive. It is recommended to use the argOptions property of the operation. For example:
 ```javascript
 // OK
 chef.convertDistance(122, {
     inputUnits: "Kilometers (km)",
     outputUnits: "Cars (4m)"
+});
+// => 30500
+
+// Less error-prone
+chef.convertDistance(122, {
+    inputUnits: chef.convertDistance.argOptions.inputUnits[5],
+    outputUnits: chef.convertDistance.argOptions.outputUnits[17]
 });
 // => 30500
 
@@ -160,6 +167,7 @@ chef.convertDistance(122, {
 });
 // => NaN
 ```
+
 
 #### Operation input
 Operations accept a wide range of input types. For most cases, you can throw any input type at an operation and it will deal with it. 
@@ -173,7 +181,7 @@ JavaScript objects are accepted as input to operations that expect JSON, for exa
 #### Operation arguments
 Operation arguments are the second argument in an operation call. The best way to see an operation's arguments is to use `chef.help(<argument name here>)` or consult the UI.
 
-Some operation arguments have default values. Some, for example `AESEncrypt`, will not work without specifying some argument.
+Some operation arguments have default values. Some, like `AESEncrypt` for example, will not work without specifying some argument.
 
 ##### Number, String, binaryString and boolean arguments
 Declare these arguments as key value pairs, where the key is the argument name.
@@ -193,13 +201,18 @@ chef.toBase32("diamond", {
 ```
 
 ##### Option arguments
-These are arguments represented as dropdowns in the UI. Here the string value must be an exact match for the option string.
+These are arguments represented as dropdowns in the UI. Here the string value must be an exact match for the option string. For convenience, it is recommended to use the `argOptions` property of the operation.
 
 Example: `toDecimal`
 ```javascript
 chef.toDecimal("Hello", {
     delimiter: "Colon", // note case sensitive
 });
+
+// Equivalent and less error-prone:
+chef.toDecimal("Hello", {
+    delimiter: chef.toDecimal.argOptions.delimiter[3]
+})
 ```
 
 ##### toggleString arguments
@@ -217,7 +230,7 @@ Example: `ADD` with explicit encoding
 chef.ADD("abc", {
     key: {
         string: "abc",
-        option: "utf8",
+        option: chef.ADD.argOptions.key[4],
     },
 });
 ```
