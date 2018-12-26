@@ -54,7 +54,7 @@ Operation arguments (ingredients) can be set to any of the following types:
  7. `populateOption`
      - Given an array of `{name: "", value: ""}` objects, the user is presented with a dropdown selection box with the names as options. The corresponding value will be assigned to whichever argument index the `target` parameter is set to.
      - See the *Regular expression* configuration in `src/core/config/OperationConfig.js` for an example of how this works.
- 8. `editableOption`
+ 8. `editableOption` or `editableOptionShort`
      - Given an array of `{name: "", value: ""}` objects, the user is presented with an editable dropdown menu. The items in the dropdown are labelled with `name` and set the argument to `value` when selected.
      - You can use the `defaultIndex` property to define which index should be selected by default, if required.
  9. `toggleString`
