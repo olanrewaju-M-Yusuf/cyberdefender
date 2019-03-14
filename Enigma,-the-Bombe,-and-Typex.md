@@ -17,8 +17,8 @@ plugboard (Steckerbrett)`AH CO DE GZ IJ KM LQ NY PS TW`, and finally the rotors 
 Enigma settings are generally given left-to-right. Therefore, you should ensure the 3-rotor Enigma
 is selected in the first dropdown menu, and then use the dropdown menus to put rotor
 `III` in the 1st rotor slot, `II` in the 2nd, and `IV` in the 3rd, and pick
-`O` in the reflector slot. In the ring setting and initial value boxes for the 1st rotor, put `K`
-and `M` respectively, `N` and `P` in the 2nd, and `G` and `M` in the 3rd. Copy the plugboard
+`B` in the reflector slot. In the ring setting and initial value boxes for the 1st rotor, put `K`
+and `O` respectively, `N` and `P` in the 2nd, and `G` and `M` in the 3rd. Copy the plugboard
 settings `AH CO DE GZ IJ KM LQ NY PS TW` into the plugboard box. Finally, paste the message into
 the input window.
 
