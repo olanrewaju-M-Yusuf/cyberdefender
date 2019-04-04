@@ -15,7 +15,7 @@ For a taste of what operations are available in CyberChef, check out the [live d
 ## Installation
 
 ```
-npm install --save CyberChef
+npm install --save cyberchef
 ```
 
 
@@ -24,25 +24,26 @@ npm install --save CyberChef
 
 ### Decode a Base64 encoded-string
 ```javascript
-import chef from "CyberChef";
+import chef from "cyberchef";
 
-chef.fromBase64("U28gbG9uZyBhbmQgdGhhbmtzIGZvciBhbGwgdGhlIGZpc2gu").toString() === "So long and thanks for all the fish."; // true
+chef.fromBase64("U28gbG9uZyBhbmQgdGhhbmtzIGZvciBhbGwgdGhlIGZpc2gu").toString();
+// => "So long and thanks for all the fish."
 ```
 
 
 ### Convert a date and time to a different time zone
 ```javascript
-import chef from "CyberChef";
+import chef from "cyberchef";
 
 const aestTime = chef.translateDateTimeFormat("15/06/2015 20:45:00", {
     outputTimezone: "Australia/Queensland"
-});
-aestTime.toString() === "Tuesday 16th June 2015 06:45:00 +10:00 AEST"; // true
+}).toString();
+// => "Tuesday 16th June 2015 06:45:00 +10:00 AEST"
 ```
 
 ### Parse a Teredo IPv6 Address
 ```javascript
-import { parseIPv6Address } from "CyberChef";
+import { parseIPv6Address } from "cyberchef";
 
 console.log(parseIPv6Address("2001:0000:4136:e378:8000:63bf:3fff:fdd2"));
 /** =>
@@ -68,51 +69,47 @@ Teredo prefix range: 2001::/32 */
 
 ### Convert data from a Hexdump, then decompress
 ```javascript
-import { Dish } from "CyberChef";
+import { Dish, fromHexdump, gunzip } from "cyberchef";
 
 const message = new Dish(`00000000  1f 8b 08 00 12 bc f3 57 00 ff 0d c7 c1 09 00 20  |.....¼óW.ÿ.ÇÁ.. |
 00000010  08 05 d0 55 fe 04 2d d3 04 1f ca 8c 44 21 5b ff  |..ÐUþ.-Ó..Ê.D![ÿ|
 00000020  60 c7 d7 03 16 be 40 1f 78 4a 3f 09 89 0b 9a 7d  |\`Ç×..¾@.xJ?....}|
 00000030  4e c8 4e 6d 05 1e 01 8b 4c 24 00 00 00           |NÈNm....L$...|`)
-.fromHexdump()
-.gunzip();
-message.toString() === "So long and thanks for all the fish." //true
+.apply(fromHexdump)
+.apply(gunzip)
+.toString();
+// =>"So long and thanks for all the fish." //true
 ```
 
 ### Interact with files from Node.js `fs` library
 ```javascript
-import { Dish, toHex } from "CyberChef";
+import { Dish, toHex, fromHex } from "cyberchef";
 
-fs.writeFileSync("test.txt", toHex("hello"));
+fs.writeFileSync("test.txt", toHex("hello").toString());
 
 const file = new Dish(fs.readFileSync("test.txt"));
+console.log(file) ;
+// => 68 65 6c 6c 6f
 
-console.log(file) // 68 65 6c 6c 6f
-file.fromHex().toString() === "hello"; // true
+file.apply(fromHex).toString() 
+// => hello;
 ```
 
 ## Import with ES6 `import` or CommonJS `require`
 
-#### ES6 imports
+### ES6 imports
 You can import the default `chef` object:
 
 ```javascript
-import chef from "CyberChef";
+import chef from "cyberchef";
 chef.toMorseCode("hello").toString();
 // => .... . .-.. .-.. ---
-```
-
-Or you can import individual operations:
-```javascript
-import {toMorseCode} from "CyberChef";
-toMorseCode("goodbye").toString();
-// => --. --- --- -.. -... -.-- .
 ```
 
 ### CommonJS require
 
 ```javascript
-const chef = require("CyberChef");
+const chef = require("cyberchef");
 chef.toKebabCase("Large chicken shish, garlic mayo, no salad.").toString();
 // => large-chicken-shish-garlic-mayo-no-salad
 ```
@@ -127,15 +124,15 @@ chef.toKebabCase("Large chicken shish, garlic mayo, no salad.").toString();
 
 You can use operations with default config, or define your own arguments.
 
-> To see what values an argument accepts, either refer to the UI or use `chef.help(<operation name>)` and inspect the args properties.
+> To see what values an argument accepts, either refer to the UI or use `chef.help(<operation name>)` and inspect the  properties.
 
-Operation with default args:
+Operation with default :
 ```javascript
 chef.toCharcode("Service!") // Space delimiter, Base 16
 // => 53 65 72 76 69 63 65 21
 ```
 
-Configure args. Arg keys are camelCase versions of those displayed on the CyberChef UI.
+Configure . Arg keys are camelCase versions of those displayed on the CyberChef UI.
 ```javascript
 chef.toCharcode("Service!", {
     base: 8
@@ -144,7 +141,7 @@ chef.toCharcode("Service!", {
 // => 123 145 162 166 151 143 145 41
 ```
 
-Where arguments are options, they are case sensitive. It is recommended to use the argOptions property of the operation. For example:
+Where arguments are options, they are case sensitive. It is recommended to use the `` property of the operation to access options. For example:
 ```javascript
 // OK
 chef.convertDistance(122, {
@@ -155,9 +152,9 @@ chef.convertDistance(122, {
 
 // Less error-prone
 chef.convertDistance(122, {
-    inputUnits: chef.convertDistance.argOptions.inputUnits[5],
-    outputUnits: chef.convertDistance.argOptions.outputUnits[17]
-});
+    inputUnits: chef.convertDistance..inputUnits.options[5],
+    outputUnits: chef.convertDistance..outputUnits.options[17]
+})
 // => 30500
 
 // Invalid outputUnits value
@@ -170,27 +167,28 @@ chef.convertDistance(122, {
 
 
 #### Operation input
-Operations accept a wide range of input types. For most cases, you can throw any input type at an operation and it will deal with it. 
+Operations accept a wide range of input types, such as strings, numbers and byteArrays. For most cases, you can throw any input type at an operation and it will deal with it. 
 
 If the given input to an operation is not the operation's input type, it will attempt to convert the input before operating on it. For example, `toBase32`'s input type is `byteArray`, so if you input a string, it converts that string into a byte array before running the operation.
 
-Files can be read into appropriate functions in chef. They are converted into ArrayBuffers.
+Files from `fs` can be read into appropriate functions in chef. They are converted into `byteArray`s.
 
 JavaScript objects are accepted as input to operations that expect JSON, for example, `JSONBeautify`.
 
 #### Operation arguments
 Operation arguments are the second argument in an operation call. The best way to see an operation's arguments is to use `chef.help(<argument name here>)` or consult the UI.
 
-Some operation arguments have default values. Some, like `AESEncrypt` for example, will not work without specifying some argument.
+Some operation arguments have default values. Some, like `AESEncrypt` for example, will not work without specifying some arguments.
 
 ##### Number, String, binaryString and boolean arguments
 Declare these arguments as key value pairs, where the key is the argument name.
 
-Example: `toGeoHash` (Number)
+Example: `toBase` (Number)
 ```javascript
-chef.toGeoHash("37.8324,112.5584", {
-    precision: 10,
-});
+chef.toBase("45", {
+    radix: 8
+})
+// => 55
 ```
 
 Example: `toBase32` (binaryString)
@@ -198,21 +196,24 @@ Example: `toBase32` (binaryString)
 chef.toBase32("diamond", {
     alphabet: "A-Z",
 });
+// => MRUWCLPNZSA
 ```
 
 ##### Option arguments
-These are arguments represented as dropdowns in the UI. Here the string value must be an exact match for the option string. For convenience, it is recommended to use the `argOptions` property of the operation.
+These are arguments represented as dropdowns in the UI. Here the string value must be an exact match for the option string. For convenience, it is recommended to use the `` property of the operation.
 
 Example: `toDecimal`
 ```javascript
 chef.toDecimal("Hello", {
     delimiter: "Colon", // note case sensitive
 });
+// => 72:101:108:108:111
 
 // Equivalent and less error-prone:
 chef.toDecimal("Hello", {
-    delimiter: chef.toDecimal.argOptions.delimiter[3]
-})
+    delimiter: chef.toDecimal..delimiter.options[3],
+});
+// => 72:101:108:108:111
 ```
 
 ##### toggleString arguments
@@ -221,16 +222,16 @@ ToggleStrings are arguments where there is a value and an option in one argument
 Example: `ADD` with default encoding
 ```javascript
 chef.ADD("abc", {
-    key: "abc"
-})
+    key: "123",
+});
 ```
 
-Example: `ADD` with explicit encoding
+Example: `ADD` with explicit encoding. Note the property `toggleValues` rather than `options` in the `` object.
 ```javascript
 chef.ADD("abc", {
     key: {
-        string: "abc",
-        option: chef.ADD.argOptions.key[4],
+        string: "123",
+        option: chef.ADD..key.toggleValues[4],
     },
 });
 ```
@@ -242,13 +243,13 @@ Operations return a [`Dish`](#the-dish-type) type. [`Dish`](#the-dish-type) has 
 Logging to the console, string coercion and number coercion work as you would expect:
 
 ```javascript
-const result = toBase32(32).fromBase32();
+const result = chef.toBase32(32).apply(chef.fromBase32);
 
 // Logging to console
 console.log(result); // => 32
 
 // Number coercion
-assert.equal(result + 3, 35); // => true
+assert.equal(result + 3, 35); // OK
 
 // String coercion
 assert.equal(result.toString(), "32"); // => true;
@@ -257,8 +258,8 @@ assert.equal(result.toString(), "32"); // => true;
 The `value` property of an operation result will give the raw result.  For example:
 ```javascript
 // dropBytes has output type ArrayBuffer
-dropBytes("I'd love a byte").value
-// => ArrayBuffer { byteLength: 8 }
+chef.dropBytes("I'd love a byte").value
+// => ArrayBuffer { byteLength: 10 }
 ```
 
 Calling `toString` will give a string representation of the result.
@@ -266,9 +267,9 @@ Calling `toString` will give a string representation of the result.
 [See more about `Dish` here.](#the-dish-type)
 
 #### Compose operations
-Operations can be composed. This example performs ROT13 substitution followed by conversion to Hex on some input:
+Operations can be composed using `apply`. This example performs ROT13 substitution followed by conversion to Hex on some input:
 ```javascript
-ROT13("Medium rare, please.").toHex().toString();
+chef.ROT13("Medium rare, please.").apply(chef.toHex).toString();
 // => 5a 72 71 76 68 7a 20 65 6e 65 72 2c 20 63 79 72 6e 66 72 2e
 ```
 
@@ -276,7 +277,7 @@ ROT13("Medium rare, please.").toHex().toString();
 #### Excluded operations
 The best way to browse operations is to run Cyberchef, either locally or via the [demo][1].
 
-Most CyberChef operations are inclided in the Node.js API, with the exception of operations that handle the Javascript `File` API and Flow Control operations. Excluded files will throw an ExcludedOperationError if called.
+Most CyberChef operations are included in the Node.js API, with the exception of Flow Control operations. Excluded operations will throw an ExcludedOperationError if called.
 
 For a full list of excluded operations, see the source files under `src/node/config/excludedOperations`.
 
@@ -289,19 +290,19 @@ The `chef` object has some other helpful functions.
 The `help` function returns the description of an operation. Use this to see what input, output and arguments an operation has.
 
 ```javascript
-chef.help(chef.toBase32)
+chef.help(chef.toBase32);
 /**
-{ module: 'Default',
+[{ module: 'Default',
   description: 'Base32 is a notation for encoding arbitrary byte data using a restricted set of symbols that can be conveniently used by humans and processed by computers. It uses a smaller set of characters than Base64, usually the uppercase alphabet and the numbers 2 to 7.',
   inputType: 'byteArray',
   outputType: 'string',
   flowControl: false,
-  args:
+  :
    [ { name: 'Alphabet',
        type: 'binaryString',
        value: 'A-Z2-7=',
        toggleValues: [] } ],
-  name: 'To Base32' }
+  name: 'To Base32' }]
 */
 ```
 
@@ -312,10 +313,12 @@ chef.help("tobase32")   // OK
 chef.help("toBase32")   // OK
 ```
 
+If there is more than one match for the given search term, `help` will return multiple matches. It searches in the operation name and the description field, prioritising matches in the operation name.
+
 #### `bake`
 `bake` is useful for building "recipes" - chains of operations to apply to some input, in order. `bake` accepts operations in multiple ways. It always returns a `Dish` object.
 
-One operation, no args
+One operation, no 
 ```javascript
 chef.bake("I'll have the cod.", chef.toBase64);
 // => SSdsbCBoYXZlIHRoZSBjb2Qu
@@ -325,35 +328,35 @@ One operation by name
 chef.bake("I'll have the cod.", "to base 64");
 // => SSdsbCBoYXZlIHRoZSBjb2Qu
 ```
-Multiple operations, by name or by function (default args)
+Multiple operations, by name or by function (default )
 ```javascript
 chef.bake("I'll have the cod", [chef.toBase64, "sha1"]);
-// => aef8b5147a4b1a0dafb427bea903af0f3c8ea151
+// => f20135964d60f5fb66f971f5ee33d8395d1f90bf
 ```
 
-One operation, with custom args
+One operation, with custom 
 ```javascript
 chef.bake("I'll have the salmon.", {
     op: chef.toBase64,
-    args: {
+    : {
         alphabet: "A-Z",
     },
 });
 // => SSCBYXZIHRZSBYW
 ```
 
-Multiple operations with custom args
+Multiple operations with custom 
 ```javascript
 chef.bake("I'll have the salmon.", [
     {
         op: chef.toBase64,
-        args: {
+        : {
             alphabet: "A-Z"
         }
     },
     {
         op: chef.sort,
-        args: {
+        : {
             delimiter: "Nothing (separate chars)",
             reverse: true,
         }
@@ -365,15 +368,30 @@ chef.bake("I'll have the salmon.", [
 > ### Using recipes from CyberChef web tool
 > `chef.bake` is compatible with the JSON format from saved recipes in the CyberChef web UI. Therefore, you can use the UI to figure out your recipe, and then export it to use in the Node.js API.
 
+```javascript
+//  taken from CyberChef web export
+const recipe = [
+    { "op": "To Base64",
+      "": ["A-Z"] },
+    { "op": "Sort",
+      "": ["Nothing (separate chars)", true, "Alphabetical (case sensitive)"] }
+];
+
+chef.bake("I'll have the salmon.", recipe);
+// => // => ZZYYXWSSSRIHCBB
+
+```
+
 
 ## The `Dish` type
 All operations in CyberChef return the `Dish` type. This allows operations to be composed. You can also create a new `Dish` with some input and then perform operations on it.
 
 Example:
 ```javascript
-import { Dish } from "CyberChef";
-const dish = new Dish("hello");
-dish.toBase32().toString(); // => NBSWY3DP
+import chef from "cyberchef";
+const dish = new chef.Dish("hello");
+dish.apply(chef.toBase32).toString();
+// => NBSWY3DP
 ```
 
 For more information on `Dish`, see the [`Dish` API](#Dish) below
@@ -385,37 +403,46 @@ Dish will coerce to a String or an Number where appropriate.
 
 Empty Dish contructor
 ```javascript
-const dish = new Dish();
+const dish = new chef.Dish();
 dish.value; // => []
 dish.type; // => 0 (byteArray)
 ```
 
 Dish with type implied from input
 ```javascript
-const dish = new Dish("input");
+const dish = new chef.Dish("input");
 dish.value; // => "input"
 dish.type; // => 1 (string)
 ```
 
 Dish with explicit type declaration
 ```javascript
-const dish = new Dish(2, "number");
+const dish = new chef.Dish(2, "number");
 dish.value; // => 2
 dish.type; // => 2 (number)
 ```
 
 Dish will not perform coercion on construction
 ```javascript
-const dish = new Dish("2", "number");
+const dish = new chef.Dish("2", "number");
 // Data is not a valid number: "2"
 ```
 
 Coerce dish value to another type
 ```javascript
-const dish = new Dish("42");
+const dish = new chef.Dish("42");
 dish.type; // => 1
 dish.get("number") // => 42
 dish.type; // => 2
+```
+
+Immutably present dish value as another type with `presentAs`
+```javascript
+const dish = new chef.Dish("42");
+dish.type; // => 1
+dish.presentAs("number") // => 42
+dish.type; // => 1
+
 ```
 
 Dish values get coerced to String on `console.log` or `toString`
@@ -431,7 +458,7 @@ result.toString(); /* => ØÕÔÍÏÕØÚÚ */
 
 Perform operations straight off a Dish:
 ```javascript
-const result = new Dish("Yum").toBinary();
+const result = new chef.Dish("Yum").apply(chef.toBinary);
 result.value; // => 01011001 01110101 01101101
 result.type; // => 1 (string)
 ```
@@ -452,7 +479,7 @@ To see what features and fixes are in the pipeline, refer to the repository [iss
 
 # REPL
 
-To run the repl, install CyberChef, run `grunt node` and then run `npm run repl`.
+To run the repl, install CyberChef, run `npm run repl`.
 
 # API
 
@@ -470,17 +497,17 @@ Returns configuration for operations matching the search term.
 ```javascript
 chef.help("md5")
 /** => 
-[ { module: 'Hashing',
-    description: 'MD5 (Message-Digest 5) is a widely used hash function. It has been used in a variety of security applications and is also commonly used to check the integrity of files.<br><br>However, MD5 is not collision resistant and it isn\'t suitable for applications like SSL/TLS certificates or digital signatures that rely on this property.',
+1 result found.
+[ { module: 'Crypto',
+    description:
+     'MD5 (Message-Digest 5) is a widely used hash function. It has been used in a variety of security applications and is also commonly used to check the integrity of files.<br><br>However, MD5 is not collision resistant and it isn\'t suitable for applications like SSL/TLS certificates or digital signatures that rely on this property.',
     infoURL: 'https://wikipedia.org/wiki/MD5',
     inputType: 'ArrayBuffer',
     outputType: 'string',
     flowControl: false,
-    args: [],
-    name: 'MD5' },
-    ...
-   ]
-
+    manualBake: false,
+    : [],
+    name: 'MD5' } ]
 */
 ```
 
@@ -491,8 +518,8 @@ Also exposed as a top level export `Dish`.
 #### Arguments:
 |Name|Type|Description|
 |-|-|-|
-|`inputOrDish=null`|ArrayBuffer, String, Number, Object or Dish|The input on which you want to operate, or a Dish instance to clone a dish. If `null`, the dish's `value` and `type` properties are set to `[]` and `0` respectively.|
-|`type=null`|`String`|The type that you want the input coerced to.|
+|`inputOrDish=null`|Buffer, ArrayBuffer, String, Number, Object or Dish|The input on which you want to operate, or a Dish instance to clone a dish. If `null`, the dish's `value` and `type` properties are set to `[]` and `0` respectively.|
+|`type=null`|`String` or `Dish` enum|The type that you want the input coerced to.|
 #### Example:
 ```javascript
 const dish = new chef.Dish("hello");
@@ -500,9 +527,8 @@ dish.value; // "hello"
 dish.type; // 1, signifying string type enum.
 
 
-// Or as top level export
-import { Dish } from "CyberChef"
-const dish = new Dish("5", "number");
+// Explicitly declare type
+const dish = new chef.Dish(5, "number");
 dish.value; // 5
 dish.type; // 2;
 ```
@@ -516,7 +542,7 @@ Useful for consuming recipes saved from the web version of CyberChef.
 |Name|Type|Description|
 |-|-|-|
 |input|any|The input for the recipe.|
-|recipeConfig|`String` or operation or an object with properties `op` and `args` (see CyberChef save recipe JSON format), or an `Array` of one or more of these types.|A description of which operations, with given arguments, to perform on the input.
+|recipeConfig|`String` or operation or an object with properties `op` and `` (see CyberChef save recipe JSON format), or an `Array` of one or more of these types.|A description of which operations, with given arguments, to perform on the input.
 #### Examples:
 ```javascript
 // Single operation input
@@ -527,10 +553,10 @@ chef.bake("Apple pie", chef.toBase32).toString();
 chef.bake("Apple pie", "to base 32").toString();
 // => IFYHA3DFEBYGSZI=
 
-// Single operation object with args
+// Single operation object with 
 chef.bake("Apple pie", {
     op: chef.toBase32, // string would work here too
-    args: {
+    : {
         alphabet: "A-Z"
     }
 }).toString();
@@ -541,7 +567,7 @@ chef.bake("Apple pie", [
     chef.toBase32,
     {
         op: "from base 32",
-        args: {
+        : {
             alphabet: "A-Z2-7=",
         },
     }
@@ -567,7 +593,8 @@ Map from string representation of type to the type enum.
 
 #### Example
 ```javascript
-0 === Dish.typeEnum("bytearray"); // => true
+chef.Dish.typeEnum("bytearray"); 
+// => 0
 ```
 
 ### static `enumLookup`
@@ -585,7 +612,8 @@ Get string representation of Dish type enum.
 
 #### Example
 ```javascript
-"JSON" === Dish.enumLookup(Dish.JSON); // => true
+chef.Dish.enumLookup(Dish.JSON); 
+// => "JSON"
 ```
 
 ### Constructor
@@ -599,20 +627,42 @@ Construct a new Dish.
 #### Examples:
 ```javascript
 // Empty Dish constructor
-const dish = new Dish();
+const dish = new chef.Dish();
 
 // String type dish (implied)
-const dish = new Dish("some input");
+const dish = new chef.Dish("some input");
 
 // Number type dish (explicit)
-const dish = new Dish(460, "number");
+const dish = new chef.Dish(460, "number");
 
 // Dish from another dish. Clones it.
-const secondDish = new Dish(dish);
+const secondDish = new chef.Dish(dish);
 ```
 
+### `dish.apply`
+A method for chaining operations. Run the given operation with the dish as the input. A new dish is returned and the original is not changed.
+
+#### Arguments
+|Name|Type|Description|
+|-|-|-|
+|operation|Operation|Operation to run with dish as input|
+|=null|Object| Operation arguments|
+
+#### Examples
+```javascript
+// Operation with default arguments
+const dish = new chef.Dish(5, "number");
+const result = dish.apply(chef.toBase32);
+
+// Operation with custom arguments
+const base64 = dish.apply(chef.toBase64, {
+    alphabet: "A-Z",
+});
+```
+
+
 ### `dish.get` or `dish.to`
-Coerce the dish to a different type.
+Coerce the dish to a different type. Mutable.
 
 #### Arguments
 |Name|Type|Description|
@@ -637,8 +687,14 @@ asNumber; // => 360
 dish.type; // => 2 (number)
 ```
 
+### `dish.presentAs`
+return the dish value as another type, without changing the dish. 
+
+Same arguments as `dish.get`.
+
+
 ### `toString`
-Coerce the current dish to a string value. Calls `get(1)` on the dish.
+Get the current dish value as a string. Does not change the dish.
 
 
 ### `dish.set`
@@ -647,7 +703,7 @@ Sets the data value and type and then validates them.
 |Name|Type|Description|
 |-|-|-|
 |value|*|new dish value|
-|type|String or Number| The data type of value. See Dish enums.
+|type|String or `Dish` enum| The data type of value. See Dish enums.
 
 #### Example
 ```javascript
