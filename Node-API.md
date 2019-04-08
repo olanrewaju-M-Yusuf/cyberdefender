@@ -152,8 +152,8 @@ chef.convertDistance(122, {
 
 // Less error-prone
 chef.convertDistance(122, {
-    inputUnits: chef.convertDistance..inputUnits.options[5],
-    outputUnits: chef.convertDistance..outputUnits.options[17]
+    inputUnits: chef.convertDistance.args.inputUnits.options[5],
+    outputUnits: chef.convertDistance.args.outputUnits.options[17]
 })
 // => 30500
 
@@ -167,11 +167,11 @@ chef.convertDistance(122, {
 
 
 #### Operation input
-Operations accept a wide range of input types, such as strings, numbers and byteArrays. For most cases, you can throw any input type at an operation and it will deal with it. 
+Operations accept a wide range of input types, such as strings, numbers, byteArrays and ArrayBuffers. For most cases, you can throw any input type at an operation and it will deal with it. 
 
 If the given input to an operation is not the operation's input type, it will attempt to convert the input before operating on it. For example, `toBase32`'s input type is `byteArray`, so if you input a string, it converts that string into a byte array before running the operation.
 
-Files from `fs` can be read into appropriate functions in chef. They are converted into `byteArray`s.
+Files from `fs` can be read into appropriate functions in chef. They are converted into `ArrayBuffer`s.
 
 JavaScript objects are accepted as input to operations that expect JSON, for example, `JSONBeautify`.
 
@@ -211,7 +211,7 @@ chef.toDecimal("Hello", {
 
 // Equivalent and less error-prone:
 chef.toDecimal("Hello", {
-    delimiter: chef.toDecimal..delimiter.options[3],
+    delimiter: chef.toDecimal.args.delimiter.options[3],
 });
 // => 72:101:108:108:111
 ```
@@ -226,12 +226,12 @@ chef.ADD("abc", {
 });
 ```
 
-Example: `ADD` with explicit encoding. Note the property `toggleValues` rather than `options` in the `` object.
+Example: `ADD` with explicit encoding. Note the property `toggleValues` rather than `options` in the `args` object.
 ```javascript
 chef.ADD("abc", {
     key: {
         string: "123",
-        option: chef.ADD..key.toggleValues[4],
+        option: chef.ADD.args.key.toggleValues[4],
     },
 });
 ```
@@ -252,7 +252,7 @@ console.log(result); // => 32
 assert.equal(result + 3, 35); // OK
 
 // String coercion
-assert.equal(result.toString(), "32"); // => true;
+assert.equal(result.toString(), "32"); // OK
 ```
 
 The `value` property of an operation result will give the raw result.  For example:
@@ -318,7 +318,7 @@ If there is more than one match for the given search term, `help` will return mu
 #### `bake`
 `bake` is useful for building "recipes" - chains of operations to apply to some input, in order. `bake` accepts operations in multiple ways. It always returns a `Dish` object.
 
-One operation, no 
+One operation, no arguments
 ```javascript
 chef.bake("I'll have the cod.", chef.toBase64);
 // => SSdsbCBoYXZlIHRoZSBjb2Qu
@@ -328,35 +328,35 @@ One operation by name
 chef.bake("I'll have the cod.", "to base 64");
 // => SSdsbCBoYXZlIHRoZSBjb2Qu
 ```
-Multiple operations, by name or by function (default )
+Multiple operations, by name or by function (default arguments)
 ```javascript
 chef.bake("I'll have the cod", [chef.toBase64, "sha1"]);
 // => f20135964d60f5fb66f971f5ee33d8395d1f90bf
 ```
 
-One operation, with custom 
+One operation, with custom arguments
 ```javascript
 chef.bake("I'll have the salmon.", {
     op: chef.toBase64,
-    : {
+    args: {
         alphabet: "A-Z",
     },
 });
 // => SSCBYXZIHRZSBYW
 ```
 
-Multiple operations with custom 
+Multiple operations with custom arguments
 ```javascript
 chef.bake("I'll have the salmon.", [
     {
         op: chef.toBase64,
-        : {
+        args: {
             alphabet: "A-Z"
         }
     },
     {
         op: chef.sort,
-        : {
+        args: {
             delimiter: "Nothing (separate chars)",
             reverse: true,
         }
@@ -372,9 +372,9 @@ chef.bake("I'll have the salmon.", [
 //  taken from CyberChef web export
 const recipe = [
     { "op": "To Base64",
-      "": ["A-Z"] },
+      "args": ["A-Z"] },
     { "op": "Sort",
-      "": ["Nothing (separate chars)", true, "Alphabetical (case sensitive)"] }
+      "args": ["Nothing (separate chars)", true, "Alphabetical (case sensitive)"] }
 ];
 
 chef.bake("I'll have the salmon.", recipe);
@@ -404,8 +404,8 @@ Dish will coerce to a String or an Number where appropriate.
 Empty Dish contructor
 ```javascript
 const dish = new chef.Dish();
-dish.value; // => []
-dish.type; // => 0 (byteArray)
+dish.value; // => ArrayBuffer {byteLength: 0}
+dish.type; // => 4
 ```
 
 Dish with type implied from input
