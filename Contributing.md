@@ -26,7 +26,7 @@ Before your contributions can be accepted, you must:
 4. Use Vanilla JS if at all possible to reduce the number of libraries required and relied upon. Frameworks like jQuery, although included, should not be used unless absolutely necessary.
 
 
-With these principals in mind, any changes or additions to CyberChef should keep it:
+With these principles in mind, any changes or additions to CyberChef should keep it:
 
  - Standalone
  - Efficient

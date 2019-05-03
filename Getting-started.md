@@ -11,17 +11,18 @@ CyberChef uses the Grunt build system, so it's very easy to install. You'll need
 
 npm will then install all the dependencies needed by Grunt.
 
+_Consider adding `export NODE_OPTIONS=--max_old_space_size=2048` to your `~/.bashrc` file. If you attempt to build a production version of CyberChef, you may get a "JavaScript heap out of memory" error if you do not set this environment variable._
+
 
 ## Compiling
 
 Grunt has been configured with several tasks to aid in the development process:
 
+
 ```
 grunt dev
 ```
 > Use this when developing new functionality. It will launch a web server on port 8080 hosting an uncompressed, development version of CyberChef, accessible by browsing to [`localhost:8080`](http://localhost:8080). Whenever a source file is modified, the development version will be rebuilt automatically.
-
-> Note: This task will initially result in an error relating to the `MetaConfig.js` file but will quickly rebuild and should complete successfully. This is due to the `MetaConfig.js` file being built at the same time as the rest of the app and therefore not being available for compilation immediately.
 
 
 ```
@@ -69,9 +70,11 @@ grunt docs
  - `src/`
      - `core/` - Core CyberChef files that make up the heart of the application
          - `config/` - Files specifying the operation configurations
-             - `modules/` - Modules containing the run functions for each operation 
-         - `lib/` - Libraries that we can't currently import through npm
+             - `modules/` - Automatically generated module references
+         - `lib/` - Libraries containing shared code for multiple operations
+         - `errors/` - Custom error types
          - `operations/` - Operation objects
+         - `vendor/` - Libraries that cannot currently be imported through npm
      - `node/` - Wrappers for the NodeJS version of CyberChef
      - `web/` - The code which makes up the CyberChef web app
          - `css/`
@@ -85,7 +88,8 @@ grunt docs
  - `test/`
      - `tests/` - Configuration for tests on operations and recipes
  - `.babelrc` - Babel transpilation configuration
- - `.travid.yml` - Travis CI build process configuration
+ - `.editorconfig` - Text editor conventions stored in a cross-compatible format
+ - `.travis.yml` - Travis CI build process configuration
  - `Gruntfile.js` - Grunt build process configuration
  - `webpack.config.js` - Webpack configuration
  - `postcss.config.js` - PostCSS configuration
