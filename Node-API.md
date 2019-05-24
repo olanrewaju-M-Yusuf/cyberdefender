@@ -109,7 +109,7 @@ chef.toMorseCode("hello").toString();
 #### Named imports
 You can import specific operations Using a deep import specifier:
 ```javascript
-import { toHex } from "cyberchef/module.mjs";
+import { toHex } from "cyberchef/src/node/index.mjs";
 toHex("Menu a la carte");
 // => 4d 65 6e 75 20 61 20 6c 61 20 63 61 72 74 65
 ```
