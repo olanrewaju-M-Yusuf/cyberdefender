@@ -43,9 +43,9 @@ const aestTime = chef.translateDateTimeFormat("15/06/2015 20:45:00", {
 
 ### Parse a Teredo IPv6 Address
 ```javascript
-import { parseIPv6Address } from "cyberchef";
+import chef from "cyberchef";
 
-console.log(parseIPv6Address("2001:0000:4136:e378:8000:63bf:3fff:fdd2"));
+console.log(chef.parseIPv6Address("2001:0000:4136:e378:8000:63bf:3fff:fdd2"));
 /** =>
 Longhand:  2001:0000:4136:e378:8000:63bf:3fff:fdd2
 Shorthand: 2001:0:4136:e378:8000:63bf:3fff:fdd2
@@ -69,29 +69,29 @@ Teredo prefix range: 2001::/32 */
 
 ### Convert data from a Hexdump, then decompress
 ```javascript
-import { Dish, fromHexdump, gunzip } from "cyberchef";
+import chef from "cyberchef";
 
-const message = new Dish(`00000000  1f 8b 08 00 12 bc f3 57 00 ff 0d c7 c1 09 00 20  |.....¼óW.ÿ.ÇÁ.. |
+const message = new chef.Dish(`00000000  1f 8b 08 00 12 bc f3 57 00 ff 0d c7 c1 09 00 20  |.....¼óW.ÿ.ÇÁ.. |
 00000010  08 05 d0 55 fe 04 2d d3 04 1f ca 8c 44 21 5b ff  |..ÐUþ.-Ó..Ê.D![ÿ|
 00000020  60 c7 d7 03 16 be 40 1f 78 4a 3f 09 89 0b 9a 7d  |\`Ç×..¾@.xJ?....}|
 00000030  4e c8 4e 6d 05 1e 01 8b 4c 24 00 00 00           |NÈNm....L$...|`)
-.apply(fromHexdump)
-.apply(gunzip)
+.apply(chef.fromHexdump)
+.apply(chef.gunzip)
 .toString();
 // =>"So long and thanks for all the fish." //true
 ```
 
 ### Interact with files from Node.js `fs` library
 ```javascript
-import { Dish, toHex, fromHex } from "cyberchef";
+import chef from "cyberchef";
 
-fs.writeFileSync("test.txt", toHex("hello").toString());
+fs.writeFileSync("test.txt", chef.toHex("hello").toString());
 
-const file = new Dish(fs.readFileSync("test.txt"));
+const file = new chef.Dish(fs.readFileSync("test.txt"));
 console.log(file) ;
 // => 68 65 6c 6c 6f
 
-file.apply(fromHex).toString() 
+file.apply(chef.fromHex).toString() 
 // => hello;
 ```
 
@@ -104,6 +104,14 @@ You can import the default `chef` object:
 import chef from "cyberchef";
 chef.toMorseCode("hello").toString();
 // => .... . .-.. .-.. ---
+```
+
+#### Named imports
+You can import specific operations Using a deep import specifier:
+```javascript
+import { toHex } from "cyberchef/module.mjs";
+toHex("Menu a la carte");
+// => 4d 65 6e 75 20 61 20 6c 61 20 63 61 72 74 65
 ```
 
 ### CommonJS require
@@ -265,6 +273,9 @@ chef.dropBytes("I'd love a byte").value
 Calling `toString` will give a string representation of the result.
 
 [See more about `Dish` here.](#the-dish-type)
+
+##### `File` output type from Dish
+Node.js does not have a `File` API, so for operations that return a `File`, we use a shim which creates an object with the same shape as the `File` Web API. You can access the underlying data if this file type with `file.data`, which will be an `ArrayBuffer`.
 
 #### Compose operations
 Operations can be composed using `apply`. This example performs ROT13 substitution followed by conversion to Hex on some input:
