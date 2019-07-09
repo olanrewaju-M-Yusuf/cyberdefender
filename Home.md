@@ -12,3 +12,4 @@ Welcome to the CyberChef wiki pages. Here you can find guides for installing and
     - [[How to add an operation|Adding-a-new-operation#how-to-add-an-operation]]
     - [[Data types|Adding-a-new-operation#data-types]]
 4. [[Creating a new theme]]
+5. [[Using the Node API|Node-API]]
