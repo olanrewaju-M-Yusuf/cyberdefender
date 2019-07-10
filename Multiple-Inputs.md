@@ -7,11 +7,11 @@ To add a new input tab, click on the `Add a new input tab` button in the input t
 ![Add input tab button](images/AddTabButton.png)
 
 This will create a new blank input tab, which you can type and paste data into.
-> You don't need to create a new tab before loading files, as any tabs will be created automatiically
+> You don't need to create a new tab before loading files, as new tabs will be created automatically
 
 ### Load Files
 #### Drag and drop
-Like in previous versions of CyberChef, a file can be loaded by drag and dropping it into the input area. You can drag and drop multiple files in the same way to load multiple files as inputs.
+Like in previous versions of CyberChef, a file can be loaded by dragging and dropping it into the input area. You can drag and drop multiple files in the same way to load multiple files as inputs.
 
 ![Animation of drag-and-dropping files](images/DragAndDrop.gif)
 
@@ -40,7 +40,7 @@ The overall load status is displayed in the input title bar. The total number of
 When autobake is triggered (e.g. when changing the recipe or the input contents), only the currently displayed input tab is baked.
 To bake all inputs, click on the `Bake!` button to initiate a full bake.
 
-> If an input hasn't been loaded when Bake is clicked, the input will be ignored.
+> If an input hasn't been fully loaded when Bake is clicked, the input will be ignored.
 
 #### Bake status
 The bake status is displayed in the output title bar. Displayed statistics are: the total number of inputs being baked, the number of pending inputs, and the number of inputs which have finished being baked.
@@ -57,7 +57,7 @@ While a bake is in progress, you can click on the bake button again (now labelle
 
 
 ### Searching for tabs
-To search for input or output tabs, click on the menu button to the right of the tab bar (`···`) and click `Find tab`. (IMAGE HERE) Use the status checkboxes to filter load or bake status, and the filter box to match the contents (or input filename) of each tab against a regular expression. Click on a search result to open that tab.
+To search for input or output tabs, click on the menu button to the right of the tab bar (`···`) and click `Find tab`. Use the status checkboxes to filter load or bake status, and the filter box to match the contents (or input filename) of each tab against a regular expression. Click on a search result to open that tab.
 
 ![Find input tab dialog](images/FindInputTab.png)
 
@@ -67,7 +67,7 @@ To search for input or output tabs, click on the menu button to the right of the
 To download an individual output, click on the `Save output to file` button in the output title bar.
 
 To download all outputs in one zip file, click on the `Save all outputs to a zip file` button in the output title bar. When this is clicked, you will be asked for a filename for the zip file, as well as a file extension for the zipped files.
-> If the file extension is left blank, CyberChef will try to automatically detect the file extension for each input. (`.dat` will be used if it can't detect it)
+> If the file extension is left blank, CyberChef will try to automatically detect the file extension for each input (`.dat` will be used if it can't be detected).
 
 ### Keyboard shortcuts
 - Add Tab
@@ -85,9 +85,9 @@ To download all outputs in one zip file, click on the `Save all outputs to a zip
 
 ### Notes
 When using multiple inputs, there are some limitations to be aware of:
-- CyberChef can be very CPU intensive when loading and baking inputs, so either the browser or your entire computer may slow down as a result.
+- CyberChef can be very CPU intensive when loading and baking inputs, so either the browser or your entire computer may slow down as a result. To make the most of systems with multiple processing cores, CyberChef will attempt to spin up multiple threads to handle the different inputs (this number is calculated as the number of available cores minus one, to make sure the UI does not become unresponsive).
 - On low memory systems, Firefox may frequently run out of memory to use and close the tab.
-- On Windows systems, Chrome doesn't let us use more than around 2-3GB of RAM. If CyberChef tries to use more than this, Chrome will close the tab.
+- On Windows systems, Chrome does not allow a browser tab to use more than around 2-3GB of RAM. If you try to load too much data into CyberChef, Chrome will close the tab.
 - Both browsers can load up to around 500,000 files using the open folder dialog.
     - In Chrome, loading more than it can handle will instantly crash the entire browser.
-    - Firefox silently cancels loading files if the number of files is above the limits
+    - Firefox silently cancels loading files if the number of files is above its limit.
