@@ -1,4 +1,3 @@
-# Multiple Inputs
 As of CyberChef v9, it's possible to run a recipe over multiple different inputs simultaneously.
 
 ## How to
