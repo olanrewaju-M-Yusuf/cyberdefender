@@ -3,6 +3,9 @@ The CyberChef **Node.js** API provides most of CyberChef's operations with a **N
 For a taste of what operations are available in CyberChef, check out the [live demo][1].
 
 
+## Compatibility
+The Node.js API is fully compatible with `v10` (lts) and partially compatible with `v12`. Named imports do not work with `v12`.
+
 
 ## Features
 
