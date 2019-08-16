@@ -10,7 +10,7 @@ The Node.js API is fully compatible with `v10` (lts) and partially compatible wi
 ## Features
 
 - (Almost) all operations in the CyberChef web tool ([see exclusions](#excluded-operations))
-- ES6 `import` and commonJS `require` capability
+- ES6 `import` (<`v12`) and commonJS `require` capability
 - Configurable, composable operations
 - Import and run saved recipes from the CyberChef web tool with `chef.bake`
 
@@ -27,27 +27,31 @@ npm install --save cyberchef
 
 ### Decode a Base64 encoded-string
 ```javascript
-import chef from "cyberchef";
+// app.js
+const chef = require("cyberchef");
 
-chef.fromBase64("U28gbG9uZyBhbmQgdGhhbmtzIGZvciBhbGwgdGhlIGZpc2gu").toString();
+console.log(chef.fromBase64("U28gbG9uZyBhbmQgdGhhbmtzIGZvciBhbGwgdGhlIGZpc2gu"));
+
+// node app.js
 // => "So long and thanks for all the fish."
 ```
 
 
 ### Convert a date and time to a different time zone
 ```javascript
+// app.mjs (node.js >= v10, < v12)
 import chef from "cyberchef";
 
-const aestTime = chef.translateDateTimeFormat("15/06/2015 20:45:00", {
+console.log(chef.translateDateTimeFormat("15/06/2015 20:45:00", {
     outputTimezone: "Australia/Queensland"
-}).toString();
+}))
+
+// node --experimental-modules app.mjs
 // => "Tuesday 16th June 2015 06:45:00 +10:00 AEST"
 ```
 
 ### Parse a Teredo IPv6 Address
 ```javascript
-import chef from "cyberchef";
-
 console.log(chef.parseIPv6Address("2001:0000:4136:e378:8000:63bf:3fff:fdd2"));
 /** =>
 Longhand:  2001:0000:4136:e378:8000:63bf:3fff:fdd2
@@ -72,56 +76,67 @@ Teredo prefix range: 2001::/32 */
 
 ### Convert data from a Hexdump, then decompress
 ```javascript
-import chef from "cyberchef";
-
 const message = new chef.Dish(`00000000  1f 8b 08 00 12 bc f3 57 00 ff 0d c7 c1 09 00 20  |.....¼óW.ÿ.ÇÁ.. |
 00000010  08 05 d0 55 fe 04 2d d3 04 1f ca 8c 44 21 5b ff  |..ÐUþ.-Ó..Ê.D![ÿ|
 00000020  60 c7 d7 03 16 be 40 1f 78 4a 3f 09 89 0b 9a 7d  |\`Ç×..¾@.xJ?....}|
 00000030  4e c8 4e 6d 05 1e 01 8b 4c 24 00 00 00           |NÈNm....L$...|`)
 .apply(chef.fromHexdump)
-.apply(chef.gunzip)
-.toString();
+.apply(chef.gunzip);
+
+console.log(message);
 // => "So long and thanks for all the fish."
 ```
 
 ### Interact with files from Node.js `fs` library
 ```javascript
-import chef from "cyberchef";
-
 fs.writeFileSync("test.txt", chef.toHex("hello").toString());
 
-const file = new chef.Dish(fs.readFileSync("test.txt"));
+let file = new chef.Dish(fs.readFileSync("test.txt"));
 console.log(file) ;
 // => 68 65 6c 6c 6f
 
-file.apply(chef.fromHex).toString() 
+file = file.apply(chef.fromHex);
+console.log(file);
 // => hello;
 ```
 
 ## Import with ES6 `import` or CommonJS `require`
 
-### ES6 imports
+### ES6 or ECMAScript imports
+> To use ECMAScript imports, your file must have the `.mjs` extension and node must be run with the `--experimental-modules` flag. For more information, see the [ECMASript Modules](https://nodejs.org/api/esm.html) page in the Node.js docs.
+
 You can import the default `chef` object:
 
 ```javascript
+// app.mjs
 import chef from "cyberchef";
-chef.toMorseCode("hello").toString();
+console.log(chef.toMorseCode("hello"));
+
+// node --experimental-modules app.mjs
 // => .... . .-.. .-.. ---
 ```
 
 #### Named imports
-You can import specific operations using a deep import specifier:
+> **!** Named imports are currently not working in node `v12`
+
+You can import specific operations using a [*deep import specifier*](https://nodejs.org/api/esm.html#esm_terminology):
 ```javascript
+// app.mjs
 import { toHex } from "cyberchef/src/node/index.mjs";
-toHex("Menu a la carte");
+console.log(toHex("Menu a la carte"));
+
+// node --experimental-modules app.mjs
 // => 4d 65 6e 75 20 61 20 6c 61 20 63 61 72 74 65
 ```
 
 ### CommonJS require
 
 ```javascript
+// app.js
 const chef = require("cyberchef");
-chef.toKebabCase("Large chicken shish, garlic mayo, no salad.").toString();
+console.log(chef.toKebabCase("Large chicken shish, garlic mayo, no salad."))
+
+// node app.js
 // => large-chicken-shish-garlic-mayo-no-salad
 ```
 
