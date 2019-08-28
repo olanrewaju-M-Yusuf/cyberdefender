@@ -55,12 +55,6 @@ grunt test
 > This will run all the pre-configured tests and output the results to stdout.
 
 
-```
-grunt docs
-```    
-> Builds the codebase documentation and places it in the `docs` directory.
-
-
 ## Repository structure
 
  - `build/`
@@ -84,7 +78,6 @@ grunt docs
          - `html/`
              - `index.html` - The CyberChef page structure
          - `static/` - Static files like images
- - `docs/` - Codebase documentation, populated by running `grunt docs`.
  - `test/`
      - `tests/` - Configuration for tests on operations and recipes
  - `.babelrc` - Babel transpilation configuration
