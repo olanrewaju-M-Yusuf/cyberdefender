@@ -6,12 +6,12 @@ Many common data encoding schemes, such as Base64, Hexadecimal and Gzip, have pr
 
 Example regular expression for Base64 data using the standard alphabet:
 ```regex
-/^(?:[A-Z\\d+/]{4})+(?:[A-Z\\d+/]{2}==|[A-Z\\d+/]{3}=)?$/i
+/^(?:[A-Z\d+/]{4})+(?:[A-Z\d+/]{2}==|[A-Z\d+/]{3}=)?$/i
 ```
 
 Example regular expression for Base64 data using the y64 alphabet:
 ```regex
-/^(?:[A-Z\\d._]{4}){5,}(?:[A-Z\\d._]{2}--|[A-Z\\d._]{3}-)?$/i
+/^(?:[A-Z\d._]{4}){5,}(?:[A-Z\d._]{2}--|[A-Z\d._]{3}-)?$/i
 ```
 
 ### Speculative execution
