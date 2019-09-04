@@ -28,26 +28,13 @@ grunt dev
 ```
 grunt prod
 ```
-> When you are ready to create a production build, run this command. It will lint, test, compile and compress all the source files and create a production-ready build in `build/prod`. It will also create the inline version of CyberChef at the same location, called `cyberchef.htm`.
+> When you are ready to create a production build, run this command. It will lint, test, compile and compress all the source files and create a production-ready build in `build/prod/`.
 
 
 ```
 grunt node
 ```
-> This will package up CyberChef as a NodeJS library, creating the file `build/node/CyberChef.js`. It can then be loaded and used like so:
-> ```javascript
-> > var chef = require("./CyberChef.js")
-> undefined
-> > chef.bake("test", [{"op":"To Hex","args":["Space"]}]).then(r => { console.log(r) })
-> Promise {
-> ... }
-> > { result: '74 65 73 74',
->   type: 'string',
->   progress: 1,
->   duration: 2,
->   error: false }
-> ```
-
+> This will package up CyberChef as a NodeJS library. More info on this can be found here: https://github.com/gchq/CyberChef/wiki/Node-API
 
 ```
 grunt test
@@ -58,9 +45,7 @@ grunt test
 ## Repository structure
 
  - `build/`
-     - `dev/` - This will be populated with an uncompressed development build of CyberChef by running the `grunt dev` command.
      - `prod/` - This folder contains the most recently built production version of CyberChef including the inline version. It is populated by running `grunt prod`.
-     - `node/` - Populated with the packaged NodeJS version of CyberChef by running the `grunt node` command.
  - `src/`
      - `core/` - Core CyberChef files that make up the heart of the application
          - `config/` - Files specifying the operation configurations
