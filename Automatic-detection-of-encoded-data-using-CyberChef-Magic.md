@@ -16,7 +16,7 @@ Example regular expression for Base64 data using the y64 alphabet:
 
 ### Speculative execution
 
-For every pattern that matches, the corresponding operation is speculatively executed to determine what the output looks like. Various metrics are collected for each of these possible branches to determine whether they look like valid data or not. Each branch is also checked for further pattern matches, meaning that data under multiple levels of encoding can be unwrapped recursively. The maximum number of levels of recursion is controlled by the 'Depth' argument.
+For every pattern that matches, the corresponding operation is speculatively executed. Various metrics are collected for each of these possible branches to determine whether they look like valid data or not. Each branch is also checked for further pattern matches, meaning that data under multiple levels of encoding can be unwrapped recursively. The maximum number of levels of recursion is controlled by the 'Depth' argument.
 
 The methods used to detect how "valid" the data looks are as follows, ranging from simple to more complex techniques:
 
@@ -36,15 +36,15 @@ UTF-8 data has a well-defined structure which can be easily tested for. The pres
 
 #### Byte frequency analysis
 
-On average, the English language contains more "e"s than any other letter. In fact, given a long enough sample, the relative frequency of each character is very predictable, to the extent that we can consider any text not roughly matching these frequencies as unlikely to be English.
+On average, the English language contains more "e"s than any other letter. In fact, given a long enough sample, the relative frequency of each character is very predictable, to the extent that if text does not roughly match these frequencies, we can consider it unlikely to be English.
 
 ![English letter frequencies](https://user-images.githubusercontent.com/22770796/43697173-2253822c-993a-11e8-9ced-b567b5eea61a.png)
 
-This set of frequencies can be expanded to include all possible bytes, incorporating punctuation, numbers, symbols and other formatting characters. To generate a set of accurate "truth data", the [English language Wikipedia dump](https://dumps.wikimedia.org/enwiki/) was downloaded, wiki syntax was stripped out, then the byte frequencies were calculated. The resulting values assume a character encoding of UTF-8.
+This set of frequencies can be expanded to include all possible bytes, including punctuation, numbers, symbols and other formatting characters. To generate a set of accurate "truth data", the [English language Wikipedia dump](https://dumps.wikimedia.org/enwiki/) was downloaded, wiki syntax was stripped out, then the byte frequencies were calculated. The resulting values assume a character encoding of UTF-8.
 
-For every branch created by the Magic operation, the byte frequencies for the output are calculated and then compared to this truth data using [Pearson's chi-squared goodness of fit test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test). This process tells us how closely the branch's output matches the English language and therefore hopefully gives us an idea of how likely it is that we have found correctly decoded data, if that data includes a reasonably high proportion of English text.
+For every branch created by the Magic operation, the byte frequencies for the output are calculated and then compared to this truth data using [Pearson's chi-squared goodness of fit test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test). This process tells us how closely the branch's output matches the English language and gives us an idea of how likely it is that we have found correctly decoded data, if that data includes a reasonably high proportion of English text.
 
-Truth data was also generated for all other languages supported by Wikipedia. By default, only the top 38 languages are checked (based on the most popular languages used on the Internet, as listed on [W3 Techs](https://w3techs.com/technologies/overview/content_language/all)), however if 'Extensive language support' is selected, all 245 languages are supported.
+Truth data was also generated for all other languages supported by Wikipedia. By default, only the top 38 languages are checked (based on the most popular languages used on the Internet, as listed on [W3 Techs](https://w3techs.com/technologies/overview/content_language/all)), however if 'Extensive language support' is selected, 245 languages are supported.
 
 ![Georgian language detection](https://user-images.githubusercontent.com/22770796/43700059-24afe498-9949-11e8-8ce4-ce4c79863f49.png)
 
