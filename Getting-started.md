@@ -3,7 +3,7 @@
 CyberChef uses the Grunt build system, so it's very easy to install. You'll need to carry out the following steps to get going:
 
  1. Install Git
- 2. Install Node.js and its package manager, npm
+ 2. Install the latest LTS version of Node.js and its package manager, npm
  3. Install Grunt: `npm install -g grunt-cli`
  4. `git clone https://github.com/gchq/CyberChef.git`
  5. `cd CyberChef`
