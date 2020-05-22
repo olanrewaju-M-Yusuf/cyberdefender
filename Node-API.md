@@ -4,13 +4,15 @@ For a taste of what operations are available in CyberChef, check out the [live d
 
 
 ## Compatibility
-The Node.js API is fully compatible with `v10` (lts) and partially compatible with `v12`. Named imports do not work with `v12`.
+
+The Node.js API is:
+- fully compatible when loaded with `require`
+- partially compatible when loaded with `import`. [More information below](#ECMAScript-Module-imports)
 
 
 ## Features
 
 - (Almost) all operations in the CyberChef web tool ([see exclusions](#excluded-operations))
-- ES6 `import` (<`v12`) and commonJS `require` capability
 - Configurable, composable operations
 - Import and run saved recipes from the CyberChef web tool with `chef.bake`
 
@@ -100,36 +102,13 @@ console.log(file);
 // => hello;
 ```
 
-## Import with ES6 `import` or CommonJS `require`
+## Import with ES Module `import` or CommonJS `require`
 
-### ES6 or ECMAScript imports
-> To use ECMAScript imports, your file must have the `.mjs` extension and node must be run with the `--experimental-modules` flag. For more information, see the [ECMASript Modules](https://nodejs.org/api/esm.html) page in the Node.js docs.
-
-You can import the default `chef` object:
-
-```javascript
-// app.mjs
-import chef from "cyberchef";
-console.log(chef.toMorseCode("hello"));
-
-// node --experimental-modules app.mjs
-// => .... . .-.. .-.. ---
-```
-
-#### Named imports
-> **!** Named imports are currently not working in node `v12`
-
-You can import specific operations using a [*deep import specifier*](https://nodejs.org/api/esm.html#esm_terminology):
-```javascript
-// app.mjs
-import { toHex } from "cyberchef/src/node/index.mjs";
-console.log(toHex("Menu a la carte"));
-
-// node --experimental-modules app.mjs
-// => 4d 65 6e 75 20 61 20 6c 61 20 63 61 72 74 65
-```
+CyberChef was initially written for the browser and uses the ES Module system (ESM). Node.js is working to become more compatible with ESM, but it is not fully compatible by default, yet. Here we document ways of loading cyberchef with CJS and ESM, and the implications of each.
 
 ### CommonJS require
+
+To allow CJS modules to require the ES Modules that CyberChef is built with, CyberChef uses an export utilising the [esm package](https://github.com/standard-things/esm) when the package is loaded with `require`.
 
 ```javascript
 // app.js
@@ -138,6 +117,60 @@ console.log(chef.toKebabCase("Large chicken shish, garlic mayo, no salad."))
 
 // node app.js
 // => large-chicken-shish-garlic-mayo-no-salad
+```
+
+There are performance implications with using this method, as reported [here](https://github.com/gchq/CyberChef/issues/1016). A crude measurement of import time on a modern laptop is 4 - 8 seconds. 
+
+To get better import performance, make use of Node.js v12+ experimental capability for CJS interoperability, detailed below.
+
+### ECMAScript Module imports [experimental]
+> To use ECMAScript imports, your file must have the `.mjs` extension (or `"type":"module"` in `package.json`) and node must be run with the `--experimental-modules` flag (NodeJS v12). For more information, see the [ECMASript Modules](https://nodejs.org/api/esm.html) page in the Node.js docs.
+
+Unless stated otherwise, all of the `import` examles below use NodeJS v12.16.3 LTS. The `--experimental-modules` flag is not needed in NodeJS v14+, but the other flags are still required.
+
+**Additional flags required**
+
+[`--experimental-json-modules`](https://nodejs.org/docs/latest-v12.x/api/esm.html#esm_experimental_json_modules): Some CyberChef config is loaded from JSON modules.
+
+[`--experimental-specifier-resolution`](https://nodejs.org/docs/latest-v12.x/api/esm.html#esm_customizing_esm_specifier_resolution_algorithm): One of our dependencies is also built with ES Modules but has not used explicit file extensions on all of its imports. Until [this PR is merged](https://github.com/nf404/crypto-api/pull/13), this flag is required.
+
+#### import the default `chef` object:
+
+```javascript
+// app.mjs
+import chef from "cyberchef";
+console.log(chef.toMorseCode("hello"));
+
+// NodeJS v10
+// node --experimental-modules app.mjs
+// => .... . .-.. .-.. ---
+// (This still uses the CJS module wrapper, but is a lot faster than `require`)
+
+// NodeJS v12
+// node --experimental-modules \
+// --experimental-json-modules \
+// --experimental-specifier-resolution=node app.mjs
+// => .... . .-.. .-.. ---
+```
+
+#### Named imports
+
+NodeJS v10 does not support named imports as it uses the CJS wrapper under the hood.
+
+```javascript
+// app.mjs
+import { toHex } from "cyberchef";
+console.log(toHex("Menu a la carte"));
+
+// NodeJS v10
+// node --experimental-modules app.mjs
+// => Fails
+
+// NodeJS v12
+// node --experimental-modules \
+// --experimental-json-modules \
+// --experimental-specifier-resolution=node app.mjs
+// => 4d 65 6e 75 20 61 20 6c 61 20 63 61 72 74 65
 ```
 
 ## Usage
