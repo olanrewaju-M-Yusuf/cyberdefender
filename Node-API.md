@@ -396,9 +396,19 @@ chef.bake("I'll have the salmon.", [
 ```
 
 > ### Using recipes from the CyberChef web app
-> `chef.bake` is compatible with the JSON format from saved recipes in the CyberChef web UI. Therefore, you can use the UI to figure out your recipe, and then export it to use in the Node.js API.
+> `chef.bake` is compatible with the CHEF and JSON format from saved recipes in the CyberChef web UI. Therefore, you can use the UI to figure out your recipe, and then export it to use in the Node.js API.
 
+**CHEF format**
 ```javascript
+const recipe = "ROT13(true,false,14)MD5()To_Hex('Space',0)";
+
+chef.bake("Throw Throw Burrito", recipe);
+// => 38 39 34 37 39 38 63 37 35 31 39 39 37 36 34 37 35 32 61 61 32 64 33 31 39 37 66 63 61 32 32 30
+```
+
+**JSON format**
+```javascript
+
 //  taken from CyberChef web app 'Save Recipe' export
 const recipe = [
     { "op": "To Base64",
