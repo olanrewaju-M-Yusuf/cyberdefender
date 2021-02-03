@@ -39,7 +39,7 @@ grunt node
 > This will package up CyberChef as a NodeJS library. More info on this can be found here: https://github.com/gchq/CyberChef/wiki/Node-API
 
 ```
-grunt test
+npm test
 ```
 > This will run all the pre-configured tests and output the results to stdout.
 
