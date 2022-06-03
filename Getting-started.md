@@ -14,6 +14,8 @@ npm will then install all the dependencies needed by Grunt.
 > Consider adding `export NODE_OPTIONS=--max_old_space_size=2048` to your `~/.bashrc` file. If you attempt to build a production version of CyberChef, you may get a "JavaScript heap out of memory" error if you do not set this environment variable.
 
 
+> If you are getting sass problems, try running `npm rebuild node-sass` after `npm install`.
+
 ## Compiling
 
 > Note that CyberChef only supports bash-based dev environments, so primarily Linux and Mac. You may be able to get a build working on Windows, but it is not officially supported.
