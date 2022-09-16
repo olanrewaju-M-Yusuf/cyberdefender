@@ -3,40 +3,36 @@
 CyberChef uses the Grunt build system, so it's very easy to install. You'll need to carry out the following steps to get going:
 
  1. Install Git
- 2. Install version 17 of Node.js and version 8 of its package manager, npm
- 3. Install Grunt: `npm install -g grunt-cli`
- 4. `git clone https://github.com/gchq/CyberChef.git`
- 5. `cd CyberChef`
- 6. `npm install`
+ 2. Install Node.js version 18 and npm version 8 ([nvm](https://github.com/nvm-sh/nvm) is usually a good way of managing your Node versions)
+ 3. `git clone https://github.com/gchq/CyberChef.git`
+ 4. `cd CyberChef`
+ 5. `npm install`
 
-npm will then install all the dependencies needed by Grunt.
+npm will then install all the dependencies needed to build and run CyberChef.
 
-> Consider adding `export NODE_OPTIONS=--max_old_space_size=2048` to your `~/.bashrc` file. If you attempt to build a production version of CyberChef, you may get a "JavaScript heap out of memory" error if you do not set this environment variable.
-
-
-> If you are getting sass problems, try running `npm rebuild node-sass` after `npm install`.
+> Consider adding `export NODE_OPTIONS=--max_old_space_size=2048` to your `~/.bashrc` file. If you attempt to build a production version of CyberChef, you may get a "JavaScript heap out of memory" error if you do not set this environment variable. You can also run `npm run setheapsize` to do this but it will not persist between terminal sessions.
 
 ## Compiling
 
 > Note that CyberChef only supports bash-based dev environments, so primarily Linux and Mac. You may be able to get a build working on Windows, but it is not officially supported.
 
-Grunt has been configured with several tasks to aid in the development process:
+npm has been configured with several scripts to aid in the development process:
 
 
 ```
-grunt dev
+npm start
 ```
 > Use this when developing new functionality. It will launch a web server on port 8080 hosting an uncompressed, development version of CyberChef, accessible by browsing to [`localhost:8080`](http://localhost:8080). Whenever a source file is modified, the development version will be rebuilt automatically.
 
 
 ```
-grunt prod
+npm run build
 ```
 > When you are ready to create a production build, run this command. It will lint, test, compile and compress all the source files and create a production-ready build in `build/prod/`.
 
 
 ```
-grunt node
+npm run node
 ```
 > This will package up CyberChef as a NodeJS library. More info on this can be found here: https://github.com/gchq/CyberChef/wiki/Node-API
 
