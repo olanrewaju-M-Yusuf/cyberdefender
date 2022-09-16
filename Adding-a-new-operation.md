@@ -4,7 +4,7 @@ The easiest way to create a new operation is to use the provided quickstart scri
         
 Once this file has been created, add your operation to the [`src/core/config/Categories.json`](https://github.com/gchq/CyberChef/blob/master/src/core/config/Categories.json) file. This determines which menu it will appear in. You can add it to multiple menus if you feel it is appropriate.
         
-Finally, run `grunt dev` if you haven't already. If it's already running, it should automatically build a development version when you save the files. You should now be able to view your operation on the site by browsing to [`localhost:8080`](http://localhost:8080).
+Finally, run `npm start` if you haven't already. If it's already running, it should automatically build a development version when you save the files. You should now be able to view your operation on the site by browsing to [`localhost:8080`](http://localhost:8080).
 
 You can write whatever code you like as long as it is encapsulated within the object you created. Take a look at [`src/core/operations/Entropy.mjs`](https://github.com/gchq/CyberChef/blob/master/src/core/operations/Entropy.mjs) for a good example.
 
