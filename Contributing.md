@@ -13,7 +13,7 @@ Before your contributions can be accepted, you must:
 * Object/namespace identifiers: CamelCase
 * Function/variable names: camelCase
 * Constants: UNDERSCORE_UPPER_CASE
-* Source code encoding: UTF-8 (without BOM)
+* Source code encoding: UTF-8
 * All source files must end with a newline
 * Line endings: UNIX style (\n)
 
