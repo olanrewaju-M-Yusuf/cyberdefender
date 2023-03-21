@@ -56,8 +56,8 @@ Any characters not in the printable range are now rendered as control character 
 <br clear="both"/>
 <br />
 
-<img height="200" alt="Screenshot 2022-09-02 at 15 02 24" src="https://user-images.githubusercontent.com/22770796/226686868-4bcce2b7-2ed3-442a-a59d-1662a13b311c.png" align="right">
-<img height="200" alt="Screenshot 2022-09-02 at 15 00 45" src="https://user-images.githubusercontent.com/22770796/226686798-d41b0067-f9ad-4181-b8e5-f10de6876a5f.png" align="right">
+<img height="200" alt="Screenshot 2023-03-21 at 17 52 02" src="https://user-images.githubusercontent.com/22770796/226698418-bd73e785-c181-43a7-a66b-86d7c07a4614.png" align="right">
+<img height="200" alt="Screenshot 2023-03-21 at 17 51 49" src="https://user-images.githubusercontent.com/22770796/226698399-10e6cf2b-8b54-4986-aae0-ef367fcdb582.png" align="right">
 
 A good example of where this is helpful is if you copy multiple lines from a Windows application like Notepad or Microsoft Word into CyberChef. If your EOL separator is set to `LF` (`\n`), you will see Carriage Return control codes at the end of each line when the data is pasted in. This is because the EOL separator in Windows applications is `CR+LF` (`\r\n`) and CyberChef is set to render only `LF` characters as EOL separators, leaving the `CR` character surplus. In a tool like CyberChef it is important that we don't automatically convert these characters as we may require them to get an accurate hash of the data, decrypt it correctly, or convert it to a different format. Setting the EOL separator to `CRLF` will hide these surplus characters as both the `CR` and `LF` are used to denote the end of the line together.
 
