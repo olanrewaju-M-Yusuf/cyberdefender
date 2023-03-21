@@ -87,16 +87,10 @@ Various modern code editor features have been added to CyberChef's Input and Out
 <img width="90" alt="Screenshot 2022-09-02 at 15 18 19" src="https://user-images.githubusercontent.com/22770796/226687290-0833be2a-f855-489b-bdf4-ab227ee6ff92.png">
 <img width="97" alt="Screenshot 2022-09-02 at 15 15 27" src="https://user-images.githubusercontent.com/22770796/226687234-69f203f5-f5b0-47d3-b899-1cb931fc7cf6.png">
 
-<br clear="both"/>
+<br clear="left"/>
 <br />
 
 Bracket matching has also been added, along with selection matching which highlights other instances of the same word or phrase elsewhere in the Input or Output. If the operations in the current Recipe support it, the corresponding selections will be shown in the Output or Input respectively.
-
-<p align="center">
-<img height="300" alt="Screenshot 2022-09-02 at 14 43 52" src="https://user-images.githubusercontent.com/22770796/226693131-125dcded-4c1e-465c-83a4-9d913245466a.png">
-</p>
-
-
 
 <br clear="both"/>
 
