@@ -1,4 +1,4 @@
-CyberChef v10 introduces a range of new features to the Input and Output panes.
+CyberChef v10 introduces a range of new features to the Input and Output panes:
 
  - Status bars, showing statistics and options related to the data
  - Character encoding selection to explicitly determine how Input data should be encoded and Output data decoded
