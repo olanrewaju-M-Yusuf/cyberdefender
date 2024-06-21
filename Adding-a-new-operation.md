@@ -6,7 +6,7 @@ Once this file has been created, add your operation to the [`src/core/config/Cat
         
 Finally, run `npm start` if you haven't already. If it's already running, it should automatically build a development version when you save the files. You should now be able to view your operation on the site by browsing to [`localhost:8080`](http://localhost:8080).
 
-You can write whatever code you like as long as it is encapsulated within the object you created. Take a look at [`src/core/operations/Entropy.mjs`](https://github.com/gchq/CyberChef/blob/master/src/core/operations/Entropy.mjs) for a good example.
+You can write whatever code you like as long as it does not interfere with other operations or functionality. Take a look at [`src/core/operations/ParseTCP.mjs`](https://github.com/gchq/CyberChef/blob/master/src/core/operations/ParseTCP.mjs) for a good example.
 
 You may find it useful to use some helper functions which have been written in [`src/core/Utils.mjs`](https://github.com/gchq/CyberChef/blob/master/src/core/Utils.mjs) (e.g. `Utils.strToByteArray("Hello")` returns `[72,101,108,108,111]`).
  
@@ -53,24 +53,25 @@ Operation arguments (ingredients) can be set to any of the following types:
      - You can use the `defaultIndex` property to define which index should be selected by default, if required.
  7. `populateOption`
      - Given an array of `{name: "", value: ""}` objects, the user is presented with a dropdown selection box with the names as options. The corresponding value will be assigned to whichever argument index the `target` parameter is set to.
-     - See the *Regular expression* configuration in `src/core/config/OperationConfig.js` for an example of how this works.
+     - See the [Regular expression](https://github.com/gchq/CyberChef/blob/master/src/core/operations/RegularExpression.mjs) operation for an example of how this works.
  8. `editableOption` or `editableOptionShort`
      - Given an array of `{name: "", value: ""}` objects, the user is presented with an editable dropdown menu. The items in the dropdown are labelled with `name` and set the argument to `value` when selected.
      - You can use the `defaultIndex` property to define which index should be selected by default, if required.
+     - See the [DNS Over HTTPS](https://github.com/gchq/CyberChef/blob/master/src/core/operations/DNSOverHTTPS.mjs) operation for an example of how this works.
  9. `toggleString`
      - User is presented with a string input box with a toggleable dropdown attached.
      - Populate the dropdown using the `toggleValues` property.
      - Operation receives an object with two properties: `option` containing the user's dropdown selection, and `string` containing the input box contents.
      - Particularly useful for arguments that can be specified in various different formats.
-     - See the *XOR* configuration in `src/core/config/OperationConfig.js` for an example of how this works.
+     - See the [XOR](https://github.com/gchq/CyberChef/blob/master/src/core/operations/XOR.mjs) operation for an example of how this works.
 
 
 ## Presenting complex data
 
 The output of your operation will be passed on to the next operation in the recipe, or to the Output field if it is the final operation. If your operation has a complex output, it should be presented to the user in a friendly format, perhaps using HTML markup, however this format should not be sent to follow-on operations, as it would make onward processing unnecessarily complex.
 
-In these situations, the `present` function should be used. This function is called if your operation is the final operation in the recipe. It is passed the output of your `run` function which you can then manipulate into a suitable format for displaying to the user. This allows you to return a sensible format which can be easily processed from your `run` function.
+In these situations, the `present` function should be used. This function is called if your operation is the final operation in the recipe. It is passed the output of your `run` function which you can then manipulate into a suitable format for displaying to the user. This allows you to return a sensible format from your `run` which can be easily processed by the rest of the recipe if it is not the final operation.
 
 The data type for your present function should be specified in the operation constructor using `this.presentType`.
 
-A good example of this can be found in [`src/core/operations/Unzip.mjs`](https://github.com/gchq/CyberChef/blob/master/src/core/operations/Unzip.mjs).
+Good examples of this are the [Unzip](https://github.com/gchq/CyberChef/blob/master/src/core/operations/Unzip.mjs), [Parse UDP](https://github.com/gchq/CyberChef/blob/master/src/core/operations/ParseUDP.mjs), and [JSON Beautify](https://github.com/gchq/CyberChef/blob/master/src/core/operations/JSONBeautify.mjs) operations.
